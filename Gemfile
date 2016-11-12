@@ -1,9 +1,8 @@
 source 'https://rubygems.org'
 
-
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.0.0', '>= 5.0.0.1'
-# Use sqlite3 as the database for Active Record
+
+# db 
 group :development do
   gem 'sqlite3'
 end
@@ -11,44 +10,75 @@ group :production do
   gem 'pg'
 end
 
-# Use Puma as the app server
+gem 'pgreset'
+gem 'pg_search'
+
 gem 'puma', '~> 3.0'
-# Use SCSS for stylesheets
+
 gem 'sass-rails', '~> 5.0'
-# Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
-# Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.2'
-# See https://github.com/rails/execjs#readme for more supported runtimes
-# gem 'therubyracer', platforms: :ruby
-
-# Use jquery as the JavaScript library
 gem 'jquery-rails'
-# Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'turbolinks', '~> 5'
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
-# Use Redis adapter to run Action Cable in production
-# gem 'redis', '~> 3.0'
-# Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
+gem 'react-rails', '~> 1.8'
 
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
+gem 'active_model_serializers', github: 'rails-api/active_model_serializers'
+gem 'therubyracer'
+
+gem 'auto_html', '1.6.4'
+gem 'fontcustom', '1.3.8'
+gem 'haml-rails'
+
+gem 'ransack', '~> 1.8'
+gem 'devise', '>= 3.5'
+gem 'simple_form'
+gem 'kaminari'
+gem 'roo'
+gem 'sdoc', '~> 0.4.0', group: :doc
+
+# images
+gem 'carrierwave', '~> 0.11.2'
+gem 'mini_magick', '~> 4.5.1'
+gem 'cloudinary', '~> 1.1.7'
 
 group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platform: :mri
+  gem 'byebug', '>= 8.2'
+  gem 'pry-rails'
+  gem 'pry-byebug', '>= 3.3'
+
+  gem 'factory_girl_rails', '~> 4.7.0'
+  gem 'rspec-rails', '~> 3.5'
+  gem 'guard-rspec', require: false
+  gem 'timecop', '~> 0.8'
+  gem 'spring-commands-rspec'
 end
 
 group :development do
-  # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
+  gem 'foreman'
+  gem 'dotenv-rails'
+  gem 'better_errors'
+  gem 'binding_of_caller'
+
   gem 'web-console'
-  gem 'listen', '~> 3.0.5'
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+group :test do
+  gem 'cucumber-rails', '>= 1.4', require: false
+  gem 'database_cleaner', '>= 1.5'
+  gem 'selenium-webdriver', '~> 2.49'
+  gem 'poltergeist', '~> 1.8'
+  gem 'rspec-activemodel-mocks'
+end
+
+source 'https://rails-assets.org' do
+  gem 'rails-assets-sass-mq'
+  gem 'rails-assets-react-slick'
+  gem 'rails-assets-slick-carousel'
+  gem 'rails-assets-classnames'
+  gem 'rails-assets-es6-shim'
+  gem 'rails-assets-jquery', '2.2.4'
+  gem 'rails-assets-moment'
+  gem 'rails-assets-mediaelement'
+end
