@@ -11,15 +11,11 @@
 // about supported directives.
 //
 //= require es6-shim
-//= require array-includes-polyfill
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
 //= require react
 //= require react_ujs
 //= require classnames
-//= require redux-3-5-2.min
-//= require react-redux-4-4-5.min
-//= require redux-thunk-2-1-0.min
 //= require react-slick
 //= require components
