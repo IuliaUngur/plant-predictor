@@ -18,3 +18,4 @@
 //= require react_ujs
 //= require classnames
 //= require react-slick
+//= require bootstrap.min.js
