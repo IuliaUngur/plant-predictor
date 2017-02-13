@@ -1,1 +1,19 @@
-@import 'components';
+@import 'bootstrap.min.css';
+@import 'font-awesome';
+
+.slider-icons {
+  position: absolute;
+  top: 50%;
+  font-size: -webkit-xxx-large;
+}
+
+.carousel-inner > .item > img,
+.carousel-inner > .item > a > img {
+    width: 100%;
+    margin: auto;
+    max-height: 30%;
+}
+
+.carousel-control {
+  width: 10%;
+}

@@ -10,13 +10,10 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require es6-shim
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
 //= require react
 //= require react_ujs
-//= require classnames
-//= require react-slick
 //= require bootstrap.min.js
 //= require_tree ./react_components
