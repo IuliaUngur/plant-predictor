@@ -19,3 +19,4 @@
 //= require classnames
 //= require react-slick
 //= require bootstrap.min.js
+//= require_tree ./react_components
