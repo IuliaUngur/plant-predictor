@@ -17,16 +17,15 @@ ActiveRecord::Schema.define(version: 20170213101709) do
 
   create_table "predictions", force: :cascade do |t|
     t.boolean  "result"
-    t.string   "type"
-    t.datetime "created_at", null: false
+    t.string   "environment"
+    t.datetime "created_at",  null: false
   end
 
   create_table "sensors", force: :cascade do |t|
     t.string   "name"
-    t.text     "description"
-    t.string   "type"
-    t.datetime "created_at",    null: false
+    t.text     "measurement"
     t.string   "value"
+    t.datetime "created_at",    null: false
     t.integer  "prediction_id"
     t.index ["prediction_id"], name: "index_sensors_on_prediction_id", using: :btree
   end
