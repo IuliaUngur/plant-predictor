@@ -1,7 +1,7 @@
 var ReactHomePage = React.createClass({
   slider: function(){
     return(
-      <div className="container-fluid slider-container">
+      <div className="container-fluid">
         <div id="slider" className="carousel slide" data-ride="carousel">
           <ol className="carousel-indicators">
             <li data-target="#slider" data-slide-to="0" className="active"></li>

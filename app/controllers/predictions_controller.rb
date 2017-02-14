@@ -8,6 +8,7 @@ class PredictionsController < ApplicationController
   end
 
   def create
+    return render json: { success: "yes"}, status: 200
   end
 
   def destroy
