@@ -17,3 +17,4 @@
 //= require react_ujs
 //= require bootstrap.min.js
 //= require_tree ./react_components
+//= require_tree .
