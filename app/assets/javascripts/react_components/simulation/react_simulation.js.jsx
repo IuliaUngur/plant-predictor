@@ -12,9 +12,7 @@ var ReactSimulation = React.createClass({
   render: function(){
     return (
       <div>
-        <span className="h1">
-          {this.state.title}
-        </span>
+        <h1>{this.state.title}</h1>
       </div>
     );
   }
