@@ -1,14 +1,7 @@
 var ReactHomePage = React.createClass({
-  getInitialState: function(){
-    return{
-      title: "Hello"
-    }
-  },
-
-  render: function(){
-    return (
-      <div className="container">
-        <br/>
+  slider: function(){
+    return(
+      <div className="container-fluid slider-container">
         <div id="slider" className="carousel slide" data-ride="carousel">
           <ol className="carousel-indicators">
             <li data-target="#slider" data-slide-to="0" className="active"></li>
@@ -19,19 +12,19 @@ var ReactHomePage = React.createClass({
 
           <div className="carousel-inner" role="listbox">
             <div className="item active">
-              <img src="https://placehold.it/460x345" width="460" height="345"/>
+              <img src="https://placehold.it/2048x1024"/>
             </div>
 
             <div className="item">
-              <img src="https://placehold.it/460x345" width="460" height="345"/>
+              <img src="https://placehold.it/2048x1024"/>
             </div>
 
             <div className="item">
-              <img src="https://placehold.it/460x345" width="460" height="345"/>
+              <img src="https://placehold.it/2048x1024"/>
             </div>
 
             <div className="item">
-              <img src="https://placehold.it/460x345" width="460" height="345"/>
+              <img src="https://placehold.it/2048x1024"/>
             </div>
           </div>
 
@@ -42,6 +35,59 @@ var ReactHomePage = React.createClass({
             <span className="fa fa-angle-right slider-icons" aria-hidden="true"/>
           </a>
         </div>
+      </div>
+    );
+  },
+
+  technologies: function(){
+    var style= {
+      width: '100%'
+    };
+    return(
+      <div className="container text-center">
+        <h3>Technologies</h3><br/>
+        <div className="row">
+          <div className="col-sm-4">
+            <img src="https://placehold.it/150x80" className="img-responsive" style={style} alt="Image"/>
+            <p>Ruby On Rails</p>
+            <div className="well">
+            <p>Some text..</p>
+            </div>
+          </div>
+          <div className="col-sm-4">
+            <img src="https://placehold.it/150x80" className="img-responsive" style={style} alt="Image"/>
+            <p>ReactJS</p>
+            <div className="well">
+            <p>Some text..</p>
+            </div>
+          </div>
+          <div className="col-sm-4">
+            <img src="https://placehold.it/150x80" className="img-responsive" style={style} alt="Image"/>
+            <p>Arduino</p>
+            <div className="well">
+            <p>Some text..</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  },
+
+  footer: function(){
+    return(
+      <footer className="container-fluid text-center">
+        <p>Footer Text</p>
+      </footer>
+    );
+  },
+
+  render: function(){
+    return (
+      <div>
+        {this.slider()}
+        {this.technologies()}
+        <br/>
+        {this.footer()}
       </div>
     );
   }
