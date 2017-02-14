@@ -7,17 +7,12 @@ var ReactSimulation = React.createClass({
 
   getInitialState: function(){
     return{
-      light: "",
-      temperature: "",
-      vibration: "",
-      humidity: "",
-      raindrop: "",
-      distance: ""
+      predictions: this.props.predictions
     }
   },
 
   sensorsTable: function(){
-    var tableContent = this.props.predictions.map((prediction, index) => {
+    var tableContent = this.state.predictions.map((prediction, index) => {
       return <tr>
                <td>{prediction[0]}</td>
                <td>{prediction[1]}</td>
@@ -30,7 +25,7 @@ var ReactSimulation = React.createClass({
     });
 
     return(
-      <table className="table table-striped table-bordered">
+      <table className="table table-striped table-bordered margin-top-20">
         <thead>
           <tr>
             <th>Temperature</th>
@@ -51,16 +46,41 @@ var ReactSimulation = React.createClass({
 
   sensorForm: function(){
     return(
-      <form onSubmit={this.submitForm}>
-        Light:<input type="text" name="light"/><br/>
-        Temperature:<input type="text" name="temperature"/><br/>
-        Vibration:<input type="text" name="vibration"/><br/>
-        Humidity:<input type="text" name="humidity"/><br/>
-        Raindrops:<input type="text" name="raindrop"/><br/>
-        Distance:<input type="text" name="distance"/><br/>
+      <div className="container-fluid text-left">
+        <form name="sensorForm" onSubmit={this.submitForm}>
+          <div className="form-group">
+            <label>Light:</label>
+            <input type="text" className="form-control" name="light"/>
+          </div>
 
-        <input type="submit" value="Submit"/>
-      </form>
+          <div className="form-group">
+            <label>Temperature:</label>
+            <input type="text" className="form-control" name="temperature"/>
+          </div>
+
+          <div className="form-group">
+            <label>Vibration:</label>
+            <input type="text" className="form-control" name="vibration"/>
+          </div>
+
+          <div className="form-group">
+            <label>Humidity:</label>
+            <input type="text" className="form-control" name="humidity"/>
+          </div>
+
+          <div className="form-group">
+            <label>Raindrops:</label>
+            <input type="text" className="form-control" name="raindrop"/>
+          </div>
+
+          <div className="form-group">
+            <label>Distance:</label>
+            <input type="text" className="form-control" name="distance"/>
+          </div>
+
+          <input className="btn btn-default" type="submit" value="Submit"/>
+        </form>
+      </div>
     );
   },
 
@@ -87,8 +107,9 @@ var ReactSimulation = React.createClass({
   render: function(){
     return (
       <div className="container text-center ">
-        {this.hardwareCube()}
+        {/*{this.hardwareCube()}*/}
         {this.simulation()}
+        <button type="button" className="btn btn-default" onClick={this.resetPredictions}>Clear Simulation</button>
       </div>
     );
   },
@@ -96,11 +117,23 @@ var ReactSimulation = React.createClass({
 // AJAX
 
   createRequestSuccess: function(response){
-    console.log(response.success);
     alert("created with success");
+    document.sensorForm.reset();
+    this.state.predictions.unshift(response.success);
+    this.setState({ predictions: this.state.predictions });
   },
 
   createRequestError: function(response){
+    console.log(response.error);
+  },
+
+  deleteRequestSuccess: function(response){
+    alert("deleted with success");
+    document.sensorForm.reset();
+    this.setState({ predictions: [] });
+  },
+
+  deleteRequestError: function(response){
     console.log(response.error);
   },
 
@@ -120,7 +153,17 @@ var ReactSimulation = React.createClass({
       },
       success: this.createRequestSuccess,
       error: this.createRequestError
-    })
+    });
+  },
+
+  resetPredictions: function(event){
+    event.preventDefault();
+    $.ajax({
+      type: 'DELETE',
+      url: '/predictions/1',
+      success: this.deleteRequestSuccess,
+      error: this.deleteRequestError
+    });
   }
 });
 
