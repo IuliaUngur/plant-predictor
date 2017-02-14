@@ -1,1 +1,39 @@
-@import 'components';
+@import 'bootstrap.min.css';
+@import 'font-awesome';
+
+.slider-icons {
+  position: absolute;
+  top: 50%;
+  font-size: -webkit-xxx-large;
+}
+
+.carousel-inner > .item > img,
+.carousel-inner > .item > a > img {
+  width: 100%;
+  margin: auto;
+  max-height: 500px;
+}
+
+.carousel-control {
+  width: 10%;
+}
+
+.slider-container {
+  max-height: 500px;
+}
+
+.navbar-default {
+  margin-bottom: 0;
+}
+
+footer {
+  background-color: #f2f2f2;
+  padding: 25px;
+}
+
+/* Hide the carousel text when the screen is less than 600 pixels wide */
+@media (max-width: 600px) {
+  .carousel-caption {
+    display: none;
+  }
+}
