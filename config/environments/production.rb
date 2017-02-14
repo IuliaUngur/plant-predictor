@@ -18,10 +18,6 @@ Rails.application.configure do
   # Apache or NGINX already handles this.
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
 
-  # Disable serving static files from the `/public` folder by default since
-  # Apache or NGINX already handles this.
-  config.serve_static_files = false
-
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :uglifier
   # config.assets.css_compressor = :sass
@@ -29,7 +25,6 @@ Rails.application.configure do
   # Do not fallback to assets pipeline if a precompiled asset is missed.
   config.assets.compress = true
   config.assets.precompile +=  %w( application.scss application.js )
-  config.assets.precompile += %w( .svg .eot .woff .ttf )
   config.assets.initialize_on_precompile = true
 
   # Asset digests allow you to set far-future HTTP expiration dates on all assets,
