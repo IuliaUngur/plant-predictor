@@ -3,12 +3,12 @@
 Version Space Generalization using Plant Growth Predictions on noisy and uncertain data
 ---------------------
 To see live:
-* `[plant-predictor](https://plant-predictor.herokuapp.com/)`
+* [plant-predictor](https://plant-predictor.herokuapp.com/)
 
 
 Installation:
 
-* For ruby/git/rails installation please see this tutorial: `[RailsGirls](http://guides.railsgirls.com/install)`
+* For ruby/git/rails installation please see this tutorial: [RailsGirls](http://guides.railsgirls.com/install)
 
   - Git:
     * `mkdir Plant`
