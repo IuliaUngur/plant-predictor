@@ -1,8 +1,10 @@
 var ReactSimulation = React.createClass({
   propTypes: {
     cube_path: React.PropTypes.string,
-    sensor_images: React.PropTypes.array,
-    predictions: React.PropTypes.array
+    sensor_images: React.PropTypes.object,
+    predictions: React.PropTypes.array,
+    access_id: React.PropTypes.number,
+    sensor_values: React.PropTypes.object
   },
 
   getInitialState: function(){
@@ -11,36 +13,15 @@ var ReactSimulation = React.createClass({
     }
   },
 
-  sensorsTable: function(){
-    var tableContent = this.state.predictions.map((prediction, index) => {
-      return <tr>
-               <td>{prediction[0]}</td>
-               <td>{prediction[1]}</td>
-               <td>{prediction[2]}</td>
-               <td>{prediction[3]}</td>
-               <td>{prediction[4]}</td>
-               <td>{prediction[5]}</td>
-               <td>{prediction[6]}</td>
-             </tr>
-    });
-
-    return(
-      <table className="table table-striped table-bordered margin-top-20">
-        <thead>
-          <tr>
-            <th>Temperature</th>
-            <th>Light</th>
-            <th>Distance</th>
-            <th>Humidity</th>
-            <th>Vibrations</th>
-            <th>Rain Quantity</th>
-            <th>Algorithm Outcome</th>
-          </tr>
-        </thead>
-        <tbody>
-          {tableContent}
-        </tbody>
-      </table>
+  sensorOptions: function(sensor){
+    return (
+      <select className="form-control" name={sensor}>
+        {
+          this.props.sensor_values[sensor].map((value, index) => {
+            return <option key={index} value={value}>{value}</option>
+          })
+        }
+      </select>
     );
   },
 
@@ -50,49 +31,71 @@ var ReactSimulation = React.createClass({
         <form name="sensorForm" onSubmit={this.submitForm}>
           <div className="form-group">
             <label>Light:</label>
-            <select className="form-control" name="light">
-              <option value="light-dark">DARK</option>
-              <option value="light-moonlight">MOONLIGHT</option>
-              <option value="light-fog">FOG</option>
-              <option value="light-clear">CLEAR</option>
-              <option value="light-sunny">SUNNY</option>
-            </select>
+            {this.sensorOptions("light")}
           </div>
 
           <div className="form-group">
             <label>Temperature (C):</label>
-            <input type="number" className="form-control" name="temperature"/>
+            <input type="number" className="form-control" name="temperature" required="true"/>
           </div>
 
           <div className="form-group">
             <label>Vibration:</label>
-            <input type="number" className="form-control" name="vibration" min="0" max="1000"/>
+            <input type="number" className="form-control" name="vibration" min="0" max="1000" required="true"/>
           </div>
 
           <div className="form-group">
             <label>Humidity (%):</label>
-            <input type="number" className="form-control" name="humidity" min="0" max="100"/>
+            <input type="number" className="form-control" name="humidity" min="0" max="100"
+            required="true"/>
           </div>
 
           <div className="form-group">
             <label>Rain:</label>
-            <select className="form-control" name="raindrop">
-              <option value="raindrop-dry">DRY</option>
-              <option value="raindrop-condense">CONDENSE</option>
-              <option value="raindrop-drizzle">DRIZZLE</option>
-              <option value="raindrop-heavy">HEAVY RAIN</option>
-              <option value="raindrop-flood">FLOOD</option>
-            </select>
+            {this.sensorOptions("raindrop")}
           </div>
 
           <div className="form-group">
             <label>Distance (cm):</label>
-            <input type="number" className="form-control" name="distance" min="0"/>
+            <input type="number" className="form-control" name="distance" min="0" required="true"/>
           </div>
 
           <input className="btn btn-default" type="submit" value="Submit"/>
         </form>
       </div>
+    );
+  },
+
+  sensorsTable: function(){
+    var tableContent = this.state.predictions.map((prediction, index) => {
+      return <tr key={index}>
+               <td>{prediction.light}</td>
+               <td>{prediction.temperature}</td>
+               <td>{prediction.distance}</td>
+               <td>{prediction.raindrop}</td>
+               <td>{prediction.humidity}</td>
+               <td>{prediction.vibration}</td>
+               <td>{prediction.result}</td>
+             </tr>
+    });
+
+    return(
+      <table className="table table-striped table-bordered margin-top-20">
+        <thead>
+          <tr>
+            <th>Light</th>
+            <th>Temperature</th>
+            <th>Distance</th>
+            <th>Rain Quantity</th>
+            <th>Humidity</th>
+            <th>Vibrations</th>
+            <th>Algorithm Outcome</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tableContent}
+        </tbody>
+      </table>
     );
   },
 
@@ -120,24 +123,26 @@ var ReactSimulation = React.createClass({
 // AJAX Responses
 
   createRequestSuccess: function(response){
-    alert("created with success");
     document.sensorForm.reset();
     this.state.predictions.unshift(response.success);
     this.setState({ predictions: this.state.predictions });
   },
 
   createRequestError: function(response){
-    console.log(response.error);
+    alert(response.error);
+    document.sensorForm.reset();
+    this.setState({ predictions: this.state.predictions });
   },
 
   deleteRequestSuccess: function(response){
-    alert("deleted with success");
     document.sensorForm.reset();
-    this.setState({ predictions: [] });
+    this.setState({ predictions: response.success });
   },
 
   deleteRequestError: function(response){
-    console.log(response.error);
+    alert(response.error);
+    document.sensorForm.reset();
+    this.setState({ predictions: this.state.predictions });
   },
 
 // AJAX Requests
@@ -165,8 +170,8 @@ var ReactSimulation = React.createClass({
     event.preventDefault();
     $.ajax({
       type: 'DELETE',
-      url: '/predictions/1',
-      data: { prediction_type: "simulation" },
+      url: '/predictions/' + this.props.access_id,
+      data: { prediction_type: 'simulation' },
       success: this.deleteRequestSuccess,
       error: this.deleteRequestError
     });

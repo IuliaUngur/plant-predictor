@@ -7,21 +7,45 @@ module Ap
     # humidity - procentage - float/int 0-100
     # rain - "DRY", "CONDENSE", "DRIZZLE", "HEAVY RAIN", "FLOOD"
 
-    def initialize(params, prediction)
+    def initialize(params, environment)
       @params = params
-      @prediction = prediction
+      @environment = environment
     end
 
     def perform
-      true
+      create_sensors
+
+      return false if @prediction.blank?
+      version_space
     end
 
-    def predictions
-      []
+    def prediction_sensors_with_result
+      p = {}
+      @prediction.sensors.map do |sensor|
+        p.merge!(sensor.name => sensor.value)
+      end
+      p.merge!(result: @prediction.result.to_s)
     end
 
-    def error
-      'Could not create set'
+    private
+
+    def version_space
+      result = Ap::VersionSpace.new(@prediction).perform
+      @prediction.update_attribute(:result, result)
+    end
+
+    def create_sensors
+      ActiveRecord::Base.transaction do
+        @prediction = Prediction.create(environment: @environment)
+        @params.each do |key, value|
+          Sensor.create!(
+            name: key,
+            measurement: value.to_i.zero? ? "limited" : "continuous",
+            value: value,
+            prediction_id: @prediction.id
+          )
+        end
+      end
     end
   end
 end

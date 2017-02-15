@@ -1,19 +1,11 @@
 module Ap
-  class SimulatorDestruction
+  class VersionSpace
     def initialize(prediction)
       @prediction = prediction
     end
 
     def perform
-      true
-    end
-
-    def predictions
-      []
-    end
-
-    def error
-
+      false
     end
   end
 end
