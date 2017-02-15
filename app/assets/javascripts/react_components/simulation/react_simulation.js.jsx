@@ -50,32 +50,44 @@ var ReactSimulation = React.createClass({
         <form name="sensorForm" onSubmit={this.submitForm}>
           <div className="form-group">
             <label>Light:</label>
-            <input type="text" className="form-control" name="light"/>
+            <select className="form-control" name="light">
+              <option value="light-dark">DARK</option>
+              <option value="light-moonlight">MOONLIGHT</option>
+              <option value="light-fog">FOG</option>
+              <option value="light-clear">CLEAR</option>
+              <option value="light-sunny">SUNNY</option>
+            </select>
           </div>
 
           <div className="form-group">
-            <label>Temperature:</label>
-            <input type="text" className="form-control" name="temperature"/>
+            <label>Temperature (C):</label>
+            <input type="number" className="form-control" name="temperature"/>
           </div>
 
           <div className="form-group">
             <label>Vibration:</label>
-            <input type="text" className="form-control" name="vibration"/>
+            <input type="number" className="form-control" name="vibration" min="0" max="1000"/>
           </div>
 
           <div className="form-group">
-            <label>Humidity:</label>
-            <input type="text" className="form-control" name="humidity"/>
+            <label>Humidity (%):</label>
+            <input type="number" className="form-control" name="humidity" min="0" max="100"/>
           </div>
 
           <div className="form-group">
-            <label>Raindrops:</label>
-            <input type="text" className="form-control" name="raindrop"/>
+            <label>Rain:</label>
+            <select className="form-control" name="raindrop">
+              <option value="raindrop-dry">DRY</option>
+              <option value="raindrop-condense">CONDENSE</option>
+              <option value="raindrop-drizzle">DRIZZLE</option>
+              <option value="raindrop-heavy">HEAVY RAIN</option>
+              <option value="raindrop-flood">FLOOD</option>
+            </select>
           </div>
 
           <div className="form-group">
-            <label>Distance:</label>
-            <input type="text" className="form-control" name="distance"/>
+            <label>Distance (cm):</label>
+            <input type="number" className="form-control" name="distance" min="0"/>
           </div>
 
           <input className="btn btn-default" type="submit" value="Submit"/>
@@ -84,37 +96,28 @@ var ReactSimulation = React.createClass({
     );
   },
 
-  simulation: function(){
-    return(
-      <div>
-        <h3>Readings</h3>
-        {this.sensorForm()}
-        {this.sensorsTable()}
-      </div>
-    );
-  },
-
-  hardwareCube: function(){
-    return(
-      <div>
-        <h1>Simulation</h1>
-        <img src={this.props.cube_path} className="img-responsive"/>
-        <hr/>
-      </div>
-    );
-  },
-
   render: function(){
     return (
-      <div className="container text-center ">
-        {/*{this.hardwareCube()}*/}
-        {this.simulation()}
+      <div className="container text-center">
+        <div className="row">
+          <div className="col-sm-8">
+            <h3>Simulation Prototype</h3>
+            <img src={this.props.cube_path} className="img-responsive"/>
+          </div>
+          <div className="col-sm-4">
+            <h3>Sensor Inputs</h3>
+            {this.sensorForm()}
+          </div>
+        </div>
+        <hr/>
+        <h3>Readings</h3>
+        {this.sensorsTable()}
         <button type="button" className="btn btn-default" onClick={this.resetPredictions}>Clear Simulation</button>
       </div>
     );
   },
 
-// AJAX
+// AJAX Responses
 
   createRequestSuccess: function(response){
     alert("created with success");
@@ -137,19 +140,21 @@ var ReactSimulation = React.createClass({
     console.log(response.error);
   },
 
+// AJAX Requests
+
   submitForm: function(event){
     event.preventDefault();
-    var inputs = document.getElementsByTagName('input');
+    var fields = document.sensorForm.getElementsByClassName('form-control');
     $.ajax({
       type: 'POST',
       url: '/predictions',
       data: {
-        light: inputs.light.value,
-        temperature: inputs.temperature.value,
-        vibration: inputs.vibration.value,
-        humidity: inputs.humidity.value,
-        raindrop: inputs.raindrop.value,
-        distance: inputs.distance.value
+        light: fields.light.value,
+        temperature: fields.temperature.value,
+        vibration: fields.vibration.value,
+        humidity: fields.humidity.value,
+        raindrop: fields.raindrop.value,
+        distance: fields.distance.value
       },
       success: this.createRequestSuccess,
       error: this.createRequestError
@@ -161,6 +166,7 @@ var ReactSimulation = React.createClass({
     $.ajax({
       type: 'DELETE',
       url: '/predictions/1',
+      data: { prediction_type: "simulation" },
       success: this.deleteRequestSuccess,
       error: this.deleteRequestError
     });
