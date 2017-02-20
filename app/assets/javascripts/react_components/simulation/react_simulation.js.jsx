@@ -1,7 +1,9 @@
 var ReactSimulation = React.createClass({
   propTypes: {
-    cube_path: React.PropTypes.string,
-    sensor_images: React.PropTypes.object,
+    background_path: React.PropTypes.string,
+    components_images: React.PropTypes.object,
+    components_informations: React.PropTypes.object,
+
     predictions: React.PropTypes.array,
     access_id: React.PropTypes.number,
     sensor_values: React.PropTypes.object
@@ -103,10 +105,12 @@ var ReactSimulation = React.createClass({
     return (
       <div className="container text-center">
         <div className="row">
-          <div className="col-sm-8">
-            <h3>Simulation Prototype</h3>
-            <img src={this.props.cube_path} className="img-responsive"/>
-          </div>
+          <ReactSimulationPrototype
+            background_path={this.props.background_path}
+            components_images={this.props.components_images}
+            components_informations={this.props.components_informations}
+          />
+
           <div className="col-sm-4">
             <h3>Sensor Inputs</h3>
             {this.sensorForm()}

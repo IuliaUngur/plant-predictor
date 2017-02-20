@@ -16,9 +16,9 @@ ActiveRecord::Schema.define(version: 20170213101709) do
   enable_extension "plpgsql"
 
   create_table "predictions", force: :cascade do |t|
-    t.boolean  "result",      default: false
+    t.string   "result"
     t.string   "environment"
-    t.datetime "created_at",                  null: false
+    t.datetime "created_at",  null: false
   end
 
   create_table "sensors", force: :cascade do |t|
