@@ -10,7 +10,7 @@ class PredictionsController < ApplicationController
   end
 
   def create
-    creator = Ap::VersionCreation.new(creation_params, "simulation")
+    creator = Ap::VersionCreation.new(creation_params)
 
     if creator.perform
       render json: { success: creator.prediction_sensors_with_result }, status: 200
@@ -20,11 +20,7 @@ class PredictionsController < ApplicationController
   end
 
   def destroy
-    return render json: {
-      error: "Not allowed to destroy simulation out of context"
-    }, status: 400 if params[:prediction_type] != "simulation"
-
-    predictions = Prediction.predictions_with_sensors("simulation").distinct
+    predictions = Prediction.predictions_with_sensors(params[:prediction_type]).distinct
 
     if predictions.destroy_all
       render json: { success: [] }, status: 200
@@ -36,7 +32,7 @@ class PredictionsController < ApplicationController
   private
 
   def creation_params
-    params.permit(:light, :temperature, :vibration, :humidity, :raindrop, :distance)
+    params.permit(:light, :temperature, :vibration, :humidity, :raindrop, :distance, :prediction_type)
   end
 
   def prediction_access_id(environment)

@@ -7,9 +7,8 @@ module Ap
     # humidity - procentage - float/int 0-100
     # rain - "DRY", "CONDENSE", "DRIZZLE", "HEAVY RAIN", "FLOOD"
 
-    def initialize(params, environment)
+    def initialize(params)
       @params = params
-      @environment = environment
     end
 
     def perform
@@ -36,7 +35,7 @@ module Ap
 
     def create_sensors
       ActiveRecord::Base.transaction do
-        @prediction = Prediction.create(environment: @environment)
+        @prediction = Prediction.create(environment: @params[:prediction_type])
         @params.each do |key, value|
           Sensor.create!(
             name: key,
