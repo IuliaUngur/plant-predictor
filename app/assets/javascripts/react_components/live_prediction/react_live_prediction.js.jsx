@@ -14,13 +14,16 @@ var ReactLivePrediction = React.createClass({
   },
 
   render: function(){
-    var iframe = '<iframe src=\"' + this.props.access_page +'\" width="540" height="450"></iframe>';
     return (
       <div className="container text-center">
         <div className="row">
           <div className="col-sm-8">
             <h3>Plant Value Readings</h3>
-            <ReactIframe iframe={iframe} />
+            <ReactIframe
+              access_page={this.props.access_page}
+              width={540}
+              height={450}
+            />
           </div>
 
           <div className="col-sm-4">
@@ -63,7 +66,6 @@ var ReactLivePrediction = React.createClass({
 
   submitForm: function(event){
     event.preventDefault();
-    debugger
     var fields = document.sensorForm.getElementsByClassName('form-control');
     $.ajax({
       type: 'POST',

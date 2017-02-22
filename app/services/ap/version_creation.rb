@@ -19,11 +19,7 @@ module Ap
     end
 
     def prediction_sensors_with_result
-      p = {}
-      @prediction.sensors.map do |sensor|
-        p.merge!(sensor.name => sensor.value)
-      end
-      p.merge!(result: @prediction.result.to_s)
+      @prediction.sensor_result_set
     end
 
     private

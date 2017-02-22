@@ -10,5 +10,14 @@ class Prediction < ActiveRecord::Base
   scope :predictions_with_sensors, -> (environment) {
     joins(:sensors)
       .where(environment: environment)
+      .order(created_at: :desc)
   }
+
+  def sensor_result_set
+    p = {}
+    sensors.map do |sensor|
+      p.merge!(sensor.name => sensor.value)
+    end
+    p.merge!(result: result.to_s)
+  end
 end

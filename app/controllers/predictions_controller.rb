@@ -43,12 +43,6 @@ class PredictionsController < ApplicationController
   def predictions_with_sensors(environment)
     predictions = Prediction.predictions_with_sensors(environment).distinct
 
-    predictions.map do |prediction|
-      p = {}
-      prediction.sensors.map do |sensor|
-        p.merge!(sensor.name => sensor.value)
-      end
-      p.merge!(result: prediction.result.to_s)
-    end
+    predictions.map { |prediction| prediction.sensor_result_set }
   end
 end
