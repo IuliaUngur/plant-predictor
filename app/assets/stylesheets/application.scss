@@ -1,5 +1,6 @@
 @import 'bootstrap.min.css';
 @import 'font-awesome';
+@import 'rig-component';
 
 .slider-icons {
   position: absolute;
@@ -18,12 +19,9 @@
   width: 10%;
 }
 
-.slider-container {
-  max-height: 500px;
-}
-
 .navbar-default {
   margin-bottom: 0;
+  border-radius: 0;
 }
 
 footer {
@@ -36,4 +34,27 @@ footer {
   .carousel-caption {
     display: none;
   }
+}
+
+.sidenav {
+  padding-top: 20px;
+  background-color: #f1f1f1;
+  height: 100%;
+}
+
+.row.content {
+  height: inherit;
+  margin: auto;
+}
+
+@media screen and (max-width: 767px) {
+  .sidenav {
+    height: auto;
+    padding: 15px;
+  }
+  .row.content {height:auto;}
+}
+
+.margin-top-20{
+  margin-top: 20px;
 }
