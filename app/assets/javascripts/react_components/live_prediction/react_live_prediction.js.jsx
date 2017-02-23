@@ -18,6 +18,7 @@ var ReactLivePrediction = React.createClass({
       <div className="container text-center">
         <div className="row">
           <h3>Plant Value Readings</h3>
+          <hr/>
           <br/>
           <ReactIframe
             access_page={this.props.access_page}

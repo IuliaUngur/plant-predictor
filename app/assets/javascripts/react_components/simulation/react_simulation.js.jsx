@@ -1,9 +1,5 @@
 var ReactSimulation = React.createClass({
   propTypes: {
-    background_path: React.PropTypes.string,
-    components_images: React.PropTypes.object,
-    components_informations: React.PropTypes.object,
-
     predictions: React.PropTypes.array,
     access_id: React.PropTypes.number,
     sensor_values: React.PropTypes.object
