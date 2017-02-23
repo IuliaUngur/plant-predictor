@@ -7,6 +7,10 @@ module PredictionHelper
     current_page?(live_prediction_predictions_path) ? 'active' : ''
   end
 
+  def active_information
+    current_page?(component_information_path) ? 'active' : ''
+  end
+
   def components_paths
     {
       temperature: asset_path('sensor_temperature.png'),

@@ -1,10 +1,15 @@
 var ReactMainMenu = React.createClass({
   propTypes: {
     homepage_link: React.PropTypes.string,
+
     simulation_style: React.PropTypes.string,
     simulation_link: React.PropTypes.string,
+
     live_prediction_style: React.PropTypes.string,
-    live_prediction_link: React.PropTypes.string
+    live_prediction_link: React.PropTypes.string,
+
+    information_style: React.PropTypes.string,
+    information_link: React.PropTypes.string
   },
 
   render: function(){
@@ -34,6 +39,10 @@ var ReactMainMenu = React.createClass({
               <li className={this.props.live_prediction_style}>
                 <a aria-expanded='false' aria-haspopup='true' href={this.props.live_prediction_link} role='button'>
                   Live Prediction</a>
+              </li>
+              <li className={this.props.information_style}>
+                <a aria-expanded='false' aria-haspopup='true' href={this.props.information_link} role='button'>
+                  Component Informations</a>
               </li>
             </ul>
           </div>
