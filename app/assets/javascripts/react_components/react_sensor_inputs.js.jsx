@@ -5,56 +5,53 @@ var ReactSensorInputs = React.createClass({
     submit_function: React.PropTypes.func
   },
 
-  sensorOptions: function(sensor){
+  inputType: function(type, sensor, min, max){
+    if(type=="select"){
+      return <select className="form-control" name={sensor}>
+          {
+            this.props.sensor_values[sensor].map((value, index) => {
+              return <option key={index} value={value}>{value}</option>
+            })
+          }
+        </select>
+    }
+    else{
+      return <input type="number" className="form-control" name={sensor} required="true" min={min} max={max}/>
+    }
+  },
+
+  sensorOptions: function(type, label, sensor, min=0, max=''){
     return (
-      <select className="form-control" name={sensor}>
-        {
-          this.props.sensor_values[sensor].map((value, index) => {
-            return <option key={index} value={value}>{value}</option>
-          })
-        }
-      </select>
+      <div className="col-lg-2">
+        <div className="form-group">
+          <label>{label}</label>
+          {this.inputType(type, sensor, min, max)}
+        </div>
+      </div>
     );
   },
 
   render: function(){
     return(
-      <div className="container-fluid text-left">
-        <form name="sensorForm" onSubmit={this.props.submit_function}>
-          <div className="form-group">
-            <label>Light:</label>
-            {this.sensorOptions("light")}
-          </div>
+      <form className="form-inline" name="sensorForm" onSubmit={this.props.submit_function}>
+        <div className="row">
 
-          <div className="form-group">
-            <label>Temperature (C):</label>
-            <input type="number" className="form-control" name="temperature" required="true"/>
-          </div>
+          {this.sensorOptions("select","Light:","light")}
+          {this.sensorOptions("input","Temperature (C):","temperature")}
+          {this.sensorOptions("input","Distance (cm):","distance")}
+          {this.sensorOptions("select","Rain:","raindrop")}
+          {this.sensorOptions("input","Humidity (%):","humidity",0,100)}
+          {this.sensorOptions("input","Vibration:","vibration",0,1000)}
 
-          <div className="form-group">
-            <label>Vibration:</label>
-            <input type="number" className="form-control" name="vibration" min="0" max="1000" required="true"/>
+          <div className="col-lg-1">
+            <div className="form-group">
+              <br/>
+              <button className="btn btn-default fa fa-plus" type="submit"/>
+            </div>
           </div>
-
-          <div className="form-group">
-            <label>Humidity (%):</label>
-            <input type="number" className="form-control" name="humidity" min="0" max="100"
-            required="true"/>
-          </div>
-
-          <div className="form-group">
-            <label>Rain:</label>
-            {this.sensorOptions("raindrop")}
-          </div>
-
-          <div className="form-group">
-            <label>Distance (cm):</label>
-            <input type="number" className="form-control" name="distance" min="0" required="true"/>
-          </div>
-
-          <input className="btn btn-default" type="submit" value="Submit"/>
-        </form>
-      </div>
+        </div>
+        <br/>
+      </form>
     );
   }
 });

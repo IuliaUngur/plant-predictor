@@ -19,25 +19,19 @@ var ReactSimulation = React.createClass({
     return (
       <div className="container text-center">
         <div className="row">
-          <ReactSimulationPrototype
-            background_path={this.props.background_path}
-            components_images={this.props.components_images}
-            components_informations={this.props.components_informations}
+          <h3>Sensor Inputs</h3>
+          <br/>
+          <ReactSensorInputs
+            predictions={this.state.predictions}
+            sensor_values={this.props.sensor_values}
+            submit_function={this.submitForm}
           />
 
-          <div className="col-sm-4">
-            <h3>Sensor Inputs</h3>
-            <ReactSensorInputs
-              predictions={this.state.predictions}
-              sensor_values={this.props.sensor_values}
-              submit_function={this.submitForm}
-            />
-          </div>
+          <hr/>
+          <h3>Readings</h3>
+          <ReactPredictionTable predictions={this.state.predictions} />
+          <button type="button" className="btn btn-default" onClick={this.resetPredictions}>Clear Simulation</button>
         </div>
-        <hr/>
-        <h3>Readings</h3>
-        <ReactPredictionTable predictions={this.state.predictions} />
-        <button type="button" className="btn btn-default" onClick={this.resetPredictions}>Clear Simulation</button>
       </div>
     );
   },

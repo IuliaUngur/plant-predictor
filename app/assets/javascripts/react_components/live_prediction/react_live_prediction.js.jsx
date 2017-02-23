@@ -17,28 +17,28 @@ var ReactLivePrediction = React.createClass({
     return (
       <div className="container text-center">
         <div className="row">
-          <div className="col-sm-8">
-            <h3>Plant Value Readings</h3>
-            <ReactIframe
-              access_page={this.props.access_page}
-              width={540}
-              height={450}
-            />
-          </div>
+          <h3>Plant Value Readings</h3>
+          <br/>
+          <ReactIframe
+            access_page={this.props.access_page}
+            width={'100%'}
+            height={450}
+          />
 
-          <div className="col-sm-4">
-            <h3>Sensor Inputs</h3>
-            <ReactSensorInputs
-              predictions={this.state.predictions}
-              sensor_values={this.props.sensor_values}
-              submit_function={this.submitForm}
-            />
-          </div>
+          <hr/>
+          <h3>Sensor Inputs</h3>
+          <br/>
+          <ReactSensorInputs
+            predictions={this.state.predictions}
+            sensor_values={this.props.sensor_values}
+            submit_function={this.submitForm}
+          />
+
+          <hr/>
+          <h3>Readings</h3>
+          <ReactPredictionTable predictions={this.state.predictions} />
+          <button type="button" className="btn btn-default" onClick={this.resetPredictions}>Clear Simulation</button>
         </div>
-        <hr/>
-        <h3>Readings</h3>
-        <ReactPredictionTable predictions={this.state.predictions} />
-        <button type="button" className="btn btn-default" onClick={this.resetPredictions}>Clear Simulation</button>
       </div>
     );
   },
