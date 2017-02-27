@@ -5,7 +5,7 @@ module Ap
     end
 
     def perform
-      'plant dyes'
+      'plant dies'
     end
   end
 end

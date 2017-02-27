@@ -9,6 +9,10 @@ class PredictionsController < ApplicationController
     @id = prediction_access_id("live")
   end
 
+  def component_information
+
+  end
+
   def create
     creator = Ap::VersionCreation.new(creation_params)
 

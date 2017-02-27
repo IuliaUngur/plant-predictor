@@ -1,38 +1,59 @@
 #rig {
-    max-width:900px;
-    margin:0 auto;
+    max-width:100%;
+    margin:0 auto; /*center aligned*/
     padding:0;
-    font-size:0;
+    font-size:0; /* Remember to change it back to normal font size if have captions */
     list-style:none;
+    background-color: transparent;
 }
 #rig li {
     display: inline-block;
-    width:auto;
-    vertical-align:top;
+    *display:inline;/*for IE6 - IE7*/
+
+    vertical-align:middle;
     box-sizing:border-box;
-    margin:0;
-    padding:0;
+
+    margin-top:12px;
+    margin-bottom: 30px;
+    padding-left:15px;
+    padding-right:15px;
 }
 
+/* The wrapper for each item */
 .rig-cell {
     display:block;
     position: relative;
-    overflow-y:auto;
-    overflow-x: hidden;
+    overflow:hidden;
 }
 
+/* If have the image layer */
 .rig-img {
-    max-height:250px;
-    width:auto;
+    display:block;
+    width: 100%;
+    height: auto;
     border:none;
-    transform:scale(0.7);
+    transform:scale(0.5);
     transition:all 1s;
+    background-color: #bababa;
+}
+
+.rig-img-back {
+    position: absolute;
+    display:block;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    background: #bababa;
+    background-size:50px 50px;
 }
 
 #rig li:hover .rig-img {
-    transform:scale(1);
+    transform:scale(0.75);
 }
 
+/* If have the overlay layer */
 .rig-overlay {
     position: absolute;
     display:block;
@@ -41,17 +62,17 @@
     bottom: 0;
     right: 0;
     margin: auto;
-    background: #95DDF8 no-repeat center 20%;
-    background-size:100% 100%;
+    background: #8D8C8C no-repeat center 20%;
+    background-size:50px 50px;
     opacity:0;
     filter:alpha(opacity=0);/*For IE6 - IE8*/
     transition:all 0.6s;
 }
-
 #rig li:hover .rig-overlay {
     opacity:0.8;
 }
 
+/* If have captions */
 .rig-text {
     display:block;
     padding:0 30px;
@@ -60,17 +81,18 @@
     left:0;
     width:100%;
     text-align:center;
+    text-transform:capitalize;
     font-size:18px;
     font-weight:bold;
     font-family: 'Oswald', sans-serif;
     font-weight:normal!important;
-    top:5%;
-    color: #333;
+    top:40%;
+    color:white;
     opacity:0;
+    filter:alpha(opacity=0);/*For older IE*/
     transform:translateY(-20px);
     transition:all .3s;
 }
-
 #rig li:hover .rig-text {
     transform:translateY(0px);
     opacity:0.9;
@@ -78,7 +100,7 @@
 
 @media (max-width: 9000px) {
     #rig li {
-        width:25%;
+        width:33.33%;
     }
 }
 
@@ -90,6 +112,6 @@
 
 @media (max-width: 550px) {
     #rig li {
-        width:50%;
+        width:33.33%;
     }
 }

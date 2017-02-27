@@ -7,15 +7,29 @@ module PredictionHelper
     current_page?(live_prediction_predictions_path) ? 'active' : ''
   end
 
+  def active_information
+    current_page?(component_information_path) ? 'active' : ''
+  end
+
   def components_paths
     {
-      temperature: asset_path('sensor_temperature.png'),
-      raindrops: asset_path('sensor_raindrops.png'),
-      light: asset_path('sensor_light.png'),
-      humidity: asset_path('sensor_humidity.png'),
-      distance: asset_path('sensor_distance.png'),
-      vibration: asset_path('sensor_vibration.png'),
-      arduino: asset_path('arduino_uno.png')
+      temperature: asset_path('sensors/temperature.png'),
+      raindrops: asset_path('sensors/raindrops.png'),
+      light: asset_path('sensors/light.png'),
+      humidity: asset_path('sensors/humidity.png'),
+      distance: asset_path('sensors/distance.png'),
+      vibration: asset_path('sensors/vibration.png')
+    }
+  end
+
+  def icons_paths
+    {
+      temperature: asset_path('sensor_icons/temperature.png'),
+      raindrops: asset_path('sensor_icons/raindrops.png'),
+      light: asset_path('sensor_icons/light.png'),
+      humidity: asset_path('sensor_icons/humidity.png'),
+      distance: asset_path('sensor_icons/distance.png'),
+      vibration: asset_path('sensor_icons/vibration.png')
     }
   end
 
@@ -26,8 +40,7 @@ module PredictionHelper
       light: "measures the light. Lorem ipsum dolor sit amet, vivendo nominavi eu eam. Per id velit primis.",
       humidity: "measures the humidity. Lorem ipsum dolor sit amet, vivendo nominavi eu eam. Per id velit primis.",
       distance: "measures the distance. Lorem ipsum dolor sit amet, vivendo nominavi eu eam. Per id velit primis.",
-      vibration: "measures the vibration. Lorem ipsum dolor sit amet, vivendo nominavi eu eam. Per id velit primis.",
-      arduino: "let's you do things. Lorem ipsum dolor sit amet, vivendo nominavi eu eam. Per id velit primis."
+      vibration: "measures the vibration. Lorem ipsum dolor sit amet, vivendo nominavi eu eam. Per id velit primis."
     }
   end
 

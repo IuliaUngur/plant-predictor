@@ -20,13 +20,13 @@ var ReactPredictionTable = React.createClass({
       <table className="table table-striped table-bordered margin-top-20">
         <thead>
           <tr>
-            <th>Light</th>
-            <th>Temperature</th>
-            <th>Distance</th>
-            <th>Rain Quantity</th>
-            <th>Humidity</th>
-            <th>Vibrations</th>
-            <th>Algorithm Outcome</th>
+            <th className="text-center">Light</th>
+            <th className="text-center">Temperature</th>
+            <th className="text-center">Distance</th>
+            <th className="text-center">Rain Quantity</th>
+            <th className="text-center">Humidity</th>
+            <th className="text-center">Vibrations</th>
+            <th className="text-center">Algorithm Outcome</th>
           </tr>
         </thead>
         <tbody>

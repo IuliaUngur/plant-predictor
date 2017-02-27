@@ -1,8 +1,8 @@
 var ReactIframe = React.createClass({
   propTypes: {
     access_page: React.PropTypes.string,
-    width: React.PropTypes.number,
-    height: React.PropTypes.number
+    width: React.PropTypes.string,
+    height: React.PropTypes.string
   },
 
   getInitialState: function(){
