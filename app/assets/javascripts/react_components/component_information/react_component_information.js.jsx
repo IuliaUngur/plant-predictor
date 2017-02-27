@@ -52,7 +52,8 @@ var ReactComponentInformation = React.createClass({
               return (
                 <li key={index}>
                   <a className="rig-cell" href="#" data-toggle="modal" data-target={"#" + sensor}>
-                    <img className="rig-img" src="https://placehold.it/360x260/BABABA"/>
+                    <span className="rig-img-back"></span>
+                    <img className="rig-img" src={this.props.components_icons[sensor]}/>
                     <span className="rig-overlay"></span>
                     <span className="rig-text">
                       <span className="fa fa-search-plus fa-3x"/> {sensor}
