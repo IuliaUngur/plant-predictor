@@ -67,3 +67,26 @@ footer {
 .col-lg-2{
   width: 15.5%;
 }
+
+.modal-title{
+  text-align:center;
+  text-transform:capitalize;
+  font-weight:bold;
+  font-family: 'Oswald', sans-serif;
+  font-weight:normal!important;
+  color:black;
+}
+
+.modal.modal-wide .modal-dialog {
+  width: 60%;
+}
+.modal-wide .modal-body {
+  overflow-y: auto;
+}
+
+.info-bordered-right{
+  border-right: 1px solid #eeeeee;
+  height: 100%;
+  padding-right: 40px;
+  margin-left: 20px;
+}

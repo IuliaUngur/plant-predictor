@@ -23,7 +23,7 @@ var ReactLivePrediction = React.createClass({
           <ReactIframe
             access_page={this.props.access_page}
             width={'100%'}
-            height={450}
+            height={'450'}
           />
 
           <hr/>
