@@ -1,0 +1,1 @@
+The code presented in this folder belongs to @addisaden (GitHub) from the open-source project: https://github.com/addisaden/fuzzy-logic
