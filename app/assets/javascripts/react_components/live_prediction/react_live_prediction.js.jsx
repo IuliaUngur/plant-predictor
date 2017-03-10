@@ -58,7 +58,7 @@ var ReactLivePrediction = React.createClass({
   },
 
   requestError: function(response){
-    alert(response.error);
+    alert(response.responseJSON.error);
     document.sensorForm.reset();
     this.setState({ predictions: this.state.predictions });
   },
