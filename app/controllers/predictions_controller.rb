@@ -10,11 +10,10 @@ class PredictionsController < ApplicationController
   end
 
   def component_information
-
   end
 
   def create
-    creator = Ap::VersionCreation.new(creation_params)
+    creator = Ap::PredictionCreation.new(creation_params)
 
     if creator.perform
       render json: { success: creator.prediction_sensors_with_result }, status: 200

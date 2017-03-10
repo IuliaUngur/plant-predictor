@@ -37,11 +37,11 @@ var ReactSensorInputs = React.createClass({
         <div className="row">
 
           {this.sensorOptions("select","Light:","light")}
-          {this.sensorOptions("input","Temperature (C):","temperature")}
-          {this.sensorOptions("input","Distance (cm):","distance")}
+          {this.sensorOptions("input","Temperature (C):","temperature", -100, 100)}
+          {this.sensorOptions("input","Distance (cm):","distance", 0, 300)}
           {this.sensorOptions("select","Rain:","raindrop")}
-          {this.sensorOptions("input","Humidity (%):","humidity",0,100)}
-          {this.sensorOptions("input","Vibration:","vibration",0,1000)}
+          {this.sensorOptions("input","Humidity (%):","humidity", 0, 100)}
+          {this.sensorOptions("input","Vibration:","vibration", 0, 1000)}
 
           <div className="col-lg-1">
             <div className="form-group">
