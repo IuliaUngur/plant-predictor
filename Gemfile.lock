@@ -8,6 +8,11 @@ GIT
       case_transform (>= 0.2)
       jsonapi (= 0.1.1.beta6)
 
+PATH
+  remote: vendor/fuzzy-logic
+  specs:
+    fuzzy-logic (0.0.3)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -272,6 +277,7 @@ DEPENDENCIES
   font-awesome-rails
   fontcustom (= 1.3.8)
   foreman
+  fuzzy-logic!
   haml-rails
   jbuilder (~> 2.5)
   jquery-rails

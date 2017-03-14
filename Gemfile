@@ -24,6 +24,7 @@ gem 'roo' # for excel/ csv read access
 gem 'sdoc', '~> 0.4.0', group: :doc # documentation generator for Ruby code
 
 gem 'font-awesome-rails' # replacement for bootstrap glyphicons
+gem 'fuzzy-logic', path: "vendor/fuzzy-logic"
 
 group :development do
   gem 'foreman'
