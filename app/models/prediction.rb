@@ -18,6 +18,6 @@ class Prediction < ActiveRecord::Base
     sensors.map do |sensor|
       p.merge!(sensor.name => sensor.value)
     end
-    p.merge!(result: result.to_s)
+    p.merge!(result: result.to_s, id: id)
   end
 end

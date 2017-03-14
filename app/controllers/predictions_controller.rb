@@ -22,6 +22,19 @@ class PredictionsController < ApplicationController
     end
   end
 
+  def update
+    return render json: { error: "Could not update the prediction" }, status: 400 if
+      update_params[:result].empty?
+
+    prediction = Prediction.find(params[:id])
+
+    if prediction.update_attributes(update_params)
+      render json: { success: prediction.sensor_result_set }, status: 200
+    else
+      render json: { error: "Could not update the prediction" }, status: 400
+    end
+  end
+
   def destroy
     predictions = Prediction.predictions_with_sensors(params[:prediction_type]).distinct
 
@@ -36,6 +49,10 @@ class PredictionsController < ApplicationController
 
   def creation_params
     params.permit(:light, :temperature, :vibration, :humidity, :raindrop, :distance, :prediction_type)
+  end
+
+  def update_params
+    params.permit(:result)
   end
 
   def prediction_access_id(environment)
