@@ -23,10 +23,10 @@ class PredictionsController < ApplicationController
   end
 
   def update
-    return render json: { error: "Could not update the prediction" }, status: 400 if
-      update_params[:result].empty?
+    result = check_prerequisites
+    return render json: { error: result }, status: 400 if result.present?
 
-    prediction = Prediction.find(params[:id])
+    prediction = Prediction.find(update_params[:id])
 
     if prediction.update_attributes(update_params)
       render json: { success: prediction.sensor_result_set }, status: 200
@@ -52,7 +52,7 @@ class PredictionsController < ApplicationController
   end
 
   def update_params
-    params.permit(:result)
+    params.permit(:result, :id)
   end
 
   def prediction_access_id(environment)
@@ -64,5 +64,14 @@ class PredictionsController < ApplicationController
     predictions = Prediction.predictions_with_sensors(environment).distinct
 
     predictions.map { |prediction| prediction.sensor_result_set }
+  end
+
+  def check_prerequisites
+    return "Result can not be empty" if update_params[:result].empty?
+
+    return "Invalid option. Posible results: \n- plant survives \n- plant dies \n- uncertain outcome" if
+      ["plant survives" ,"plant dies", "uncertain outcome"].exclude?(update_params[:result])
+
+    ""
   end
 end
