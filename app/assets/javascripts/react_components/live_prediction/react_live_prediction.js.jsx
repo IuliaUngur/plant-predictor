@@ -1,6 +1,7 @@
 var ReactLivePrediction = React.createClass({
   propTypes: {
-    access_page: React.PropTypes.string,
+    src_readings: React.PropTypes.string,
+    src_hypotheses: React.PropTypes.string,
 
     predictions: React.PropTypes.array,
     access_id: React.PropTypes.number,
@@ -20,12 +21,24 @@ var ReactLivePrediction = React.createClass({
           <h3>Plant Value Readings</h3>
           <hr/>
           <br/>
-          <ReactIframe
-            access_page={this.props.access_page}
-            width={'100%'}
-            height={'450'}
-          />
-
+          <div className="row">
+            <div className="col-lg-6">
+              <h3>Sensor Readings</h3>
+              <ReactIframe
+                src={this.props.src_readings}
+                width={'100%'}
+                height={'450'}
+              />
+            </div>
+            <div className="col-lg-6">
+              <h3>Version Space Sets</h3>
+              <ReactIframe
+                src={this.props.src_hypotheses}
+                width={'100%'}
+                height={'450'}
+              />
+            </div>
+          </div>
           <hr/>
           <h3>Sensor Inputs</h3>
           <br/>

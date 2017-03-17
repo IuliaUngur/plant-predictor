@@ -1,13 +1,13 @@
 var ReactIframe = React.createClass({
   propTypes: {
-    access_page: React.PropTypes.string,
+    src: React.PropTypes.string,
     width: React.PropTypes.string,
     height: React.PropTypes.string
   },
 
   getInitialState: function(){
     return{
-      iframe: '<iframe src=\"' + this.props.access_page +
+      iframe: '<iframe src=\"' + this.props.src +
         '\" width="' + this.props.width +
         '" height="' + this.props.height +
         '"></iframe>'

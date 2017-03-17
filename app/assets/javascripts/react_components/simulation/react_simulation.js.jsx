@@ -2,19 +2,32 @@ var ReactSimulation = React.createClass({
   propTypes: {
     predictions: React.PropTypes.array,
     access_id: React.PropTypes.number,
-    sensor_values: React.PropTypes.object
+    sensor_values: React.PropTypes.object,
+    src: React.PropTypes.string
   },
 
   getInitialState: function(){
     return{
-      predictions: this.props.predictions
+      predictions: this.props.predictions,
+      update: false
     }
   },
 
   render: function(){
+    this.state.update = false;
     return (
       <div className="container text-center">
         <div className="row">
+          <h3>Version Space Sets</h3>
+
+          <hr/>
+          <ReactIframe
+            src={this.props.src}
+            width={'100%'}
+            height={'450'}
+          />
+
+          <hr/>
           <h3>Sensor Inputs</h3>
           <br/>
           <ReactSensorInputs
@@ -37,12 +50,12 @@ var ReactSimulation = React.createClass({
   createRequestSuccess: function(response){
     document.sensorForm.reset();
     this.state.predictions.unshift(response.success);
-    this.setState({ predictions: this.state.predictions });
+    this.setState({ predictions: this.state.predictions, update: true });
   },
 
   deleteRequestSuccess: function(response){
     document.sensorForm.reset();
-    this.setState({ predictions: response.success });
+    this.setState({ predictions: response.success, update: true });
   },
 
   requestError: function(response){
