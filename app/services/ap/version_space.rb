@@ -26,10 +26,22 @@ module Ap
 
       initialize_sets
       analyze_data
+      create_hypotheses_JSON_file
       prediction_outcome
     end
 
     private
+
+    def create_hypotheses_JSON_file
+      version_space = {}
+
+      File.open("public/#{@prediction_to_analyze.environment}_hypotheses.json", 'w') do |f|
+        version_space[:general] = Hash[@G.map.with_index.to_a].invert
+        version_space[:specific] = Hash[@S.map.with_index.to_a].invert
+
+        f.puts JSON.pretty_generate(version_space)
+      end
+    end
 
     def prediction_outcome
       matches_S = true
