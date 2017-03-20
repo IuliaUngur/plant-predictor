@@ -1,8 +1,8 @@
 {
   "light": "",
-  "temperature": "HOT",
-  "distance": "NEARBY",
-  "raindrop": "DRY",
-  "humidity": "33",
-  "vibration": "33"
+  "temperature": "",
+  "distance": "",
+  "raindrop": "",
+  "humidity": "",
+  "vibration": ""
 }
