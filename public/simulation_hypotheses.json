@@ -20,19 +20,11 @@
       "light": "",
       "temperature": "",
       "distance": "",
-      "raindrop": "DRY",
-      "humidity": "",
-      "vibration": ""
-    },
-    "3": {
-      "light": "",
-      "temperature": "",
-      "distance": "",
       "raindrop": "",
       "humidity": "33",
       "vibration": ""
     },
-    "4": {
+    "3": {
       "light": "",
       "temperature": "",
       "distance": "",
@@ -46,7 +38,7 @@
       "light": "",
       "temperature": "HOT",
       "distance": "NEARBY",
-      "raindrop": "DRY",
+      "raindrop": "",
       "humidity": "33",
       "vibration": "33"
     }

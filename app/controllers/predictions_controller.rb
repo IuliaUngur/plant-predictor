@@ -13,11 +13,11 @@ class PredictionsController < ApplicationController
   end
 
   def simulation_hypotheses
-    render :json => File.read('public/simulation_hypotheses.json')
+    render json: File.read('public/simulation_hypotheses.json')
   end
 
   def live_hypotheses
-    render :json => File.read('public/live_hypotheses.json')
+    render json: File.read('public/live_hypotheses.json')
   end
 
   def create
