@@ -51,7 +51,9 @@ var ReactLivePrediction = React.createClass({
           <hr/>
           <h3>Readings</h3>
           <ReactPredictionTable predictions={this.state.predictions} />
-          <button type="button" className="btn btn-default" onClick={this.resetPredictions}>Clear Simulation</button>
+          <button type="button" className="btn btn-default" onClick={this.resetPredictions}>
+            Clear Simulation
+          </button>
         </div>
       </div>
     );

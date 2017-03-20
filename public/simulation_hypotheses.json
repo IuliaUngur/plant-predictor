@@ -1,46 +1,4 @@
 {
-  "general": {
-    "0": {
-      "light": "",
-      "temperature": "HOT",
-      "distance": "",
-      "raindrop": "",
-      "humidity": "",
-      "vibration": ""
-    },
-    "1": {
-      "light": "",
-      "temperature": "",
-      "distance": "NEARBY",
-      "raindrop": "",
-      "humidity": "",
-      "vibration": ""
-    },
-    "2": {
-      "light": "",
-      "temperature": "",
-      "distance": "",
-      "raindrop": "",
-      "humidity": "33",
-      "vibration": ""
-    },
-    "3": {
-      "light": "",
-      "temperature": "",
-      "distance": "",
-      "raindrop": "",
-      "humidity": "",
-      "vibration": "33"
-    }
-  },
-  "specific": {
-    "0": {
-      "light": "",
-      "temperature": "HOT",
-      "distance": "NEARBY",
-      "raindrop": "",
-      "humidity": "33",
-      "vibration": "33"
-    }
-  }
+  "general": "",
+  "specific": ""
 }
