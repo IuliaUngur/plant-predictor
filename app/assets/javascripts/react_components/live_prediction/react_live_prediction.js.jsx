@@ -24,18 +24,16 @@ var ReactLivePrediction = React.createClass({
           <div className="row">
             <div className="col-lg-6">
               <h3>Sensor Readings</h3>
-              <ReactIframe
+              <ReactJson
                 src={this.props.src_readings}
-                width={'100%'}
-                height={'450'}
+                height={450}
               />
             </div>
             <div className="col-lg-6">
               <h3>Version Space Sets</h3>
-              <ReactIframe
+              <ReactJson
                 src={this.props.src_hypotheses}
-                width={'100%'}
-                height={'450'}
+                height={450}
               />
             </div>
           </div>
