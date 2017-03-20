@@ -10,6 +10,10 @@ var ReactJson = React.createClass({
     }
   },
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({ source: nextProps.src });
+  },
+
   render: function() {
     var jsonPretty = JSON.stringify(JSON.parse(this.state.source),null,2);
     var style={
