@@ -1,4 +1,6 @@
 class PredictionsController < ApplicationController
+  include ApplicationHelper
+
   def simulation
     @predictions = predictions_with_sensors("simulation")
     @id = prediction_access_id("simulation")
@@ -24,7 +26,14 @@ class PredictionsController < ApplicationController
     creator = Ap::PredictionCreation.new(creation_params)
 
     if creator.perform
-      render json: { success: creator.prediction_sensors_with_result }, status: 200
+      render json: {
+        predictions: creator.prediction_sensors_with_result,
+        src: {
+          simulation: json_read(simulation_hypotheses_path),
+          live: json_read(live_hypotheses_path),
+          readings: json_read(sensor_readings_path)
+        }
+      }, status: 200
     else
       render json: { error: "Could not create set" }, status: 400
     end
@@ -47,7 +56,14 @@ class PredictionsController < ApplicationController
     predictions = Prediction.predictions_with_sensors(params[:prediction_type]).distinct
 
     if predictions.destroy_all
-      render json: { success: [] }, status: 200
+      render json: {
+        predictions: [],
+        src: {
+          simulation: generic_hypotheses,
+          live: generic_hypotheses,
+          readings: generic_readings
+        },
+      }, status: 200
     else
       render json: { error: "Could not delete all simulation predictions" }, status: 400
     end
@@ -81,5 +97,13 @@ class PredictionsController < ApplicationController
       ["plant survives" ,"plant dies", "uncertain outcome"].exclude?(update_params[:result])
 
     ""
+  end
+
+  def generic_hypotheses
+    '{"general": {}, "specific": {}}'
+  end
+
+  def generic_readings
+    '{"light": "", "temperature": "", "distance": "", "raindrop": "", "humidity": "", "vibration": "" }'
   end
 end

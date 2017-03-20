@@ -10,7 +10,9 @@ var ReactLivePrediction = React.createClass({
 
   getInitialState: function(){
     return{
-      predictions: this.props.predictions
+      predictions: this.props.predictions,
+      src_readings: this.props.src_readings,
+      src_hypotheses: this.props.src_hypotheses
     }
   },
 
@@ -25,14 +27,14 @@ var ReactLivePrediction = React.createClass({
             <div className="col-lg-6">
               <h3>Sensor Readings</h3>
               <ReactJson
-                src={this.props.src_readings}
+                src={this.state.src_readings}
                 height={450}
               />
             </div>
             <div className="col-lg-6">
               <h3>Version Space Sets</h3>
               <ReactJson
-                src={this.props.src_hypotheses}
+                src={this.state.src_hypotheses}
                 height={450}
               />
             </div>
@@ -59,13 +61,21 @@ var ReactLivePrediction = React.createClass({
 
   createRequestSuccess: function(response){
     document.sensorForm.reset();
-    this.state.predictions.unshift(response.success);
-    this.setState({ predictions: this.state.predictions });
+    this.state.predictions.unshift(response.predictions);
+    this.setState({
+      predictions: this.state.predictions,
+      src_readings: response.src.readings,
+      src_hypotheses: response.src.live
+    });
   },
 
   deleteRequestSuccess: function(response){
     document.sensorForm.reset();
-    this.setState({ predictions: response.success });
+    this.setState({
+      predictions: response.predictions,
+      src_readings: response.src.readings,
+      src_hypotheses: response.src.live
+    });
   },
 
   requestError: function(response){
