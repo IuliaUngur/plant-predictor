@@ -13,12 +13,12 @@ module Ap
 
     def delete_readings
       readings = {
-        light: "",
         temperature: "",
+        light: "",
+        vibration: "",
         distance: "",
-        raindrop: "",
         humidity: "",
-        vibration: ""
+        raindrop: ""
       }
       write_to_file('sensor_readings', readings)
     end
