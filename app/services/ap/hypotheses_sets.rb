@@ -49,6 +49,8 @@ module Ap
     end
 
     def analyze_data
+      # TODO: make network grow - not just 1 layer in depth + refactor code
+
       @prediction_example_set.each do |prediction|
         if prediction.result == "plant survives"
 

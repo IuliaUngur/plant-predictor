@@ -56,6 +56,7 @@ module Ap
       if matches_S and matches_G
         'plant survives'
       elsif matches_S and !matches_G
+        # TODO: analyze in further detail this case for VersionSpace generalization
         'uncertain outcome'
       else
         'plant dies'
