@@ -1,4 +1,22 @@
 {
-  "general": "",
-  "specific": ""
+  "general": {
+    "0": {
+      "light": "",
+      "temperature": "",
+      "distance": "",
+      "raindrop": "",
+      "humidity": "",
+      "vibration": ""
+    }
+  },
+  "specific": {
+    "0": {
+      "light": "",
+      "temperature": "",
+      "distance": "",
+      "raindrop": "",
+      "humidity": "",
+      "vibration": ""
+    }
+  }
 }

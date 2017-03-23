@@ -52,7 +52,7 @@ module Ap
       # TODO: make network grow - not just 1 layer in depth + refactor code
 
       @prediction_example_set.each do |prediction|
-        if prediction.result == "plant survives"
+        if prediction.result.include?("plant survives")
 
           # Prune G to exclude descriptions inconsistent with the positive example.
           @G.each do |hypothesis|
@@ -72,7 +72,7 @@ module Ap
             end
           end
 
-        elsif prediction.result == "plant dies"
+        elsif prediction.result.include?("plant dies")
 
           # Specialize G to exclude the negative example
           @S.each do |hypothesis|

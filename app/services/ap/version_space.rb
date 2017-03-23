@@ -38,29 +38,33 @@ module Ap
     end
 
     def prediction_outcome
-      matches_S = true
-      matches_G = false
 
-      @S.each do |hypothesis|
-        @prediction_to_analyze.sensors.each do |sensor|
-          matches_S = false if ["", sensor.value].exclude?(hypothesis[sensor.name.to_sym])
-        end
-      end
+      matches_S = inc(@S)
+      matches_G = inc(@G)
 
-      @G.each do |hypothesis|
-        @prediction_to_analyze.sensors.each do |sensor|
-          matches_G = true if ["", sensor.value].include?(hypothesis[sensor.name.to_sym])
-        end
-      end
 
-      if matches_S and matches_G
-        'plant survives'
-      elsif matches_S and !matches_G
-        # TODO: analyze in further detail this case for VersionSpace generalization
-        'uncertain outcome'
+      if matches_S > 65 and matches_G == 100
+        'plant survives S:' + matches_S.to_s + ', G:' + matches_G.to_s
+      elsif matches_S < 65 and matches_G != 100
+        'plant dies S:' + matches_S.to_s + ', G:' + matches_G.to_s
       else
-        'plant dies'
+        'uncertain S:' + matches_S.to_s + ', G:' + matches_G.to_s
       end
+    end
+
+    def inc(set)
+      matches = 0;
+      set.each do |hypothesis|
+        @prediction_to_analyze.sensors.each do |sensor|
+          if sensor.value.to_i.zero? || hypothesis[sensor.name.to_sym] == ""
+            matches += 1 if ["", sensor.value].include?(hypothesis[sensor.name.to_sym])
+          else
+            matches += 1 if (hypothesis[sensor.name.to_sym].to_i - sensor.value.to_i).abs < 0.3 * sensor.value.to_i
+          end
+        end
+      end
+
+      (matches * 100)/(set.length * 6)
     end
 
   end
