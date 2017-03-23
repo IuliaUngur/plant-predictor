@@ -2,12 +2,15 @@ var ReactSimulation = React.createClass({
   propTypes: {
     predictions: React.PropTypes.array,
     access_id: React.PropTypes.number,
-    sensor_values: React.PropTypes.object
+    sensor_values: React.PropTypes.object,
+
+    src_simulation: React.PropTypes.string
   },
 
   getInitialState: function(){
     return{
-      predictions: this.props.predictions
+      predictions: this.props.predictions,
+      src: this.props.src_simulation
     }
   },
 
@@ -15,6 +18,15 @@ var ReactSimulation = React.createClass({
     return (
       <div className="container text-center">
         <div className="row">
+          <h3>Version Space Sets</h3>
+
+          <hr/>
+          <ReactJson
+            src={this.state.src}
+            height={450}
+          />
+
+          <hr/>
           <h3>Sensor Inputs</h3>
           <br/>
           <ReactSensorInputs
@@ -36,13 +48,13 @@ var ReactSimulation = React.createClass({
 
   createRequestSuccess: function(response){
     document.sensorForm.reset();
-    this.state.predictions.unshift(response.success);
-    this.setState({ predictions: this.state.predictions });
+    this.state.predictions.unshift(response.predictions);
+    this.setState({ predictions: this.state.predictions, src: response.src.simulation });
   },
 
   deleteRequestSuccess: function(response){
     document.sensorForm.reset();
-    this.setState({ predictions: response.success });
+    this.setState({ predictions: response.predictions, src: response.src.simulation });
   },
 
   requestError: function(response){

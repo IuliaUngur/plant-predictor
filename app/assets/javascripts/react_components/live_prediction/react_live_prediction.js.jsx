@@ -1,6 +1,7 @@
 var ReactLivePrediction = React.createClass({
   propTypes: {
-    access_page: React.PropTypes.string,
+    src_readings: React.PropTypes.string,
+    src_hypotheses: React.PropTypes.string,
 
     predictions: React.PropTypes.array,
     access_id: React.PropTypes.number,
@@ -9,7 +10,9 @@ var ReactLivePrediction = React.createClass({
 
   getInitialState: function(){
     return{
-      predictions: this.props.predictions
+      predictions: this.props.predictions,
+      src_readings: this.props.src_readings,
+      src_hypotheses: this.props.src_hypotheses
     }
   },
 
@@ -20,12 +23,22 @@ var ReactLivePrediction = React.createClass({
           <h3>Plant Value Readings</h3>
           <hr/>
           <br/>
-          <ReactIframe
-            access_page={this.props.access_page}
-            width={'100%'}
-            height={'450'}
-          />
-
+          <div className="row">
+            <div className="col-lg-6">
+              <h3>Sensor Readings</h3>
+              <ReactJson
+                src={this.state.src_readings}
+                height={450}
+              />
+            </div>
+            <div className="col-lg-6">
+              <h3>Version Space Sets</h3>
+              <ReactJson
+                src={this.state.src_hypotheses}
+                height={450}
+              />
+            </div>
+          </div>
           <hr/>
           <h3>Sensor Inputs</h3>
           <br/>
@@ -38,7 +51,9 @@ var ReactLivePrediction = React.createClass({
           <hr/>
           <h3>Readings</h3>
           <ReactPredictionTable predictions={this.state.predictions} />
-          <button type="button" className="btn btn-default" onClick={this.resetPredictions}>Clear Simulation</button>
+          <button type="button" className="btn btn-default" onClick={this.resetPredictions}>
+            Clear Simulation
+          </button>
         </div>
       </div>
     );
@@ -48,13 +63,21 @@ var ReactLivePrediction = React.createClass({
 
   createRequestSuccess: function(response){
     document.sensorForm.reset();
-    this.state.predictions.unshift(response.success);
-    this.setState({ predictions: this.state.predictions });
+    this.state.predictions.unshift(response.predictions);
+    this.setState({
+      predictions: this.state.predictions,
+      src_readings: response.src.readings,
+      src_hypotheses: response.src.live
+    });
   },
 
   deleteRequestSuccess: function(response){
     document.sensorForm.reset();
-    this.setState({ predictions: response.success });
+    this.setState({
+      predictions: response.predictions,
+      src_readings: response.src.readings,
+      src_hypotheses: response.src.live
+    });
   },
 
   requestError: function(response){

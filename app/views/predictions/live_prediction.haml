@@ -1,6 +1,7 @@
 = render 'shared/menu'
 = react_component 'ReactLivePrediction',
-    access_page: 'http://127.0.0.1/',
+    src_readings: json_read(sensor_readings_path),
+    src_hypotheses: json_read(live_hypotheses_path),
     predictions: @predictions,
     access_id: @id,
     sensor_values: sensor_constant_values

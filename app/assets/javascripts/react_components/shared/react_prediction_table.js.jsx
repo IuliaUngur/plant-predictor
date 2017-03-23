@@ -9,6 +9,10 @@ var ReactPredictionTable = React.createClass({
     }
   },
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({ predictions: nextProps.predictions });
+  },
+
   render: function() {
     var tableContent = this.state.predictions.map((prediction, index) => {
       return <tr key={index}>
