@@ -32,6 +32,7 @@ module Ap
       File.open("public/#{@prediction_to_analyze.environment}_hypotheses.json", 'w') do |f|
         version_space[:general] = Hash[@G.map.with_index.to_a].invert
         version_space[:specific] = Hash[@S.map.with_index.to_a].invert
+        # version_space[:uncertain] = Hash[@U.map.with_index.to_a].invert
 
         f.puts JSON.pretty_generate(version_space)
       end
@@ -39,9 +40,19 @@ module Ap
 
     def prediction_outcome
 
-      matches_S = inc(@S)
-      matches_G = inc(@G)
+      matches_S = levels_of_matching(@S)
+      matches_G = levels_of_matching(@G)
 
+      # TODO: remove option of G empty and S being fine
+      # eg1: G empty 100% , S low => plant dies
+      # eg2: G empty 100% , S high => plant survives
+
+      # TODO: generate every rule that is uncertain and include it to version_space JSON
+      # ie: every value from the prediction that is not in S or is empty,
+      #     but the prediction matches one or more hypotheses from G
+      # eg: G = {temp = cold}, S={light = dark, temp=cold, humid = high}
+      #     U = {temp=cold & dist=low => 70% survival, temp=cold & dist=high => 30% death } <= decide on highest bidder
+      #     compare them with initial survival conditions (or with an average on survival to make vote values)
 
       if matches_S > 65 and matches_G == 100
         'plant survives S:' + matches_S.to_s + ', G:' + matches_G.to_s
@@ -52,7 +63,7 @@ module Ap
       end
     end
 
-    def inc(set)
+    def levels_of_matching(set)
       matches = 0;
       set.each do |hypothesis|
         @prediction_to_analyze.sensors.each do |sensor|

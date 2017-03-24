@@ -49,8 +49,6 @@ module Ap
     end
 
     def analyze_data
-      # TODO: make network grow - not just 1 layer in depth + refactor code
-
       @prediction_example_set.each do |prediction|
         if prediction.result.include?("plant survives")
 
@@ -67,7 +65,9 @@ module Ap
           @S.each do |hypothesis|
             prediction.sensors.each do |sensor|
               if hypothesis[sensor.name.to_sym] != sensor.value
-                hypothesis[sensor.name.to_sym] = ""
+                if !check_for_G_hypotheses_existance(prediction, sensor)
+                  hypothesis[sensor.name.to_sym] = ""
+                end
               end
             end
           end
@@ -77,20 +77,36 @@ module Ap
           # Specialize G to exclude the negative example
           @S.each do |hypothesis|
             hypothesis.each do |input|
+              hypothesis_differences = @empty_slot
               # input = [name, value]
               if input.last != prediction.sensors.find_by(name: input.first).value
+                if input.last != ""
+                  hypothesis_differences[input.first] = input.last
+                end
+
                 new_entry = insert_set(input)
-                @G << new_entry unless @G.include?(new_entry)
+
+                if @G.include?(new_entry)
+                  # Eliminate from G non-minimal hypotheses
+                  # Add composed elements if they contain same base values
+
+                  position = @G.index(new_entry)
+                  add_element = new_entry.merge(hypothesis_differences)
+                  @G[position] = add_element
+                else
+                  @G << new_entry unless @G.include?(new_entry)
+                end
               end
             end
           end
 
+          # Only maximal elements are added to G to solve "Eliminate from G non-minimal hypotheses"
         end
+      end
 
-        # Eliminate from G empty case if it contains anything else
-        @G.count.times do
-          @G.slice!(@G.index(@empty_slot)) if @G.count > 1 and @G.include?(@empty_slot)
-        end
+      # Eliminate from G empty case if it contains anything else
+      @G.count.times do
+        @G.slice!(@G.index(@empty_slot)) if @G.count > 1 and @G.include?(@empty_slot)
       end
     end
 
@@ -103,6 +119,17 @@ module Ap
         humidity: input.first == :humidity ? input.last : '',
         vibration: input.first == :vibration ? input.last : ''
       }
+    end
+
+    def check_for_G_hypotheses_existance(prediction, sensor_match)
+      @G.each do |hypothesis|
+        prediction.sensors.each do |sensor|
+          return false if
+            sensor.name != sensor_match.name &&
+            hypothesis[sensor.name.to_sym] != sensor.value
+        end
+      end
+      true
     end
 
   end
