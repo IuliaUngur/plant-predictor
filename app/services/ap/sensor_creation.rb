@@ -1,24 +1,5 @@
 module Ap
   class SensorCreation
-    # temperature
-    #   - { arduino: degrees C - float }
-    #   - { after fuzzy: freeze, cold, cool, warm, hot }
-    # light
-    #   - { arduino: "DARK", "MOONLIGHT", "FOG", "CLEAR", "SUNNY" }
-    #   - { after fuzzy: dark, moonlight, fog, clear, sunny }
-    # vibration
-    #   - { arduino: value - float }
-    #   - { after fuzzy: value - float }
-    # distance
-    #   - { arduino: value - float }
-    #   - { after fuzzy: overlap, close, nearby, in_range, far }
-    # humidity
-    #   - { arduino: procentage - float/int 0-100 }
-    #   - { after fuzzy: procentage - float/int 0-100}
-    # raindrop
-    #   - { arduino: "DRY", "CONDENSE", "DRIZZLE", "HEAVY RAIN", "FLOOD" }
-    #   - { after fuzzy: dry, condense, drizzle, heavy_rain, flood }
-
     def initialize(name, value, prediction)
       @name = name
       @value = value

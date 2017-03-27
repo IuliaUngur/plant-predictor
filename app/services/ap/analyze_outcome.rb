@@ -40,7 +40,7 @@ module Ap
     end
 
     def levels_of_matching(set)
-      matches = 0;
+      matches = 0
       set.each do |hypothesis|
         @prediction.sensors.each do |sensor|
           if sensor.value.to_i.zero? || hypothesis[sensor.name.to_sym] == ""
