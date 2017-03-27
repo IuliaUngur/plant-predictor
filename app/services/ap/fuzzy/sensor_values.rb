@@ -5,8 +5,8 @@ module Ap
       TEMPERATURE = %w(FREEZE COLD COOL WARM HOT).freeze
       DISTANCE = %w(OVERLAP CLOSE NEARBY IN_RANGE FAR).freeze
       RAINDROP = %w(DRY CONDENSE DRIZZLE HEAVY_RAIN FLOOD).freeze
-      HUMIDITY = %w(<20 20-40 40-60 60-80 >80).freeze
-      VIBRATION = %w(<10 10-50 50-100 100-500 >500).freeze
+      HUMIDITY = %w(0-20 20-40 40-60 60-80 80-100).freeze
+      VIBRATION = %w(0-10 10-50 50-100 100-500 500-1024).freeze
 
       # temperature
       #   - { arduino: degrees C - float }
