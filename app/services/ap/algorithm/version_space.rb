@@ -20,20 +20,27 @@ module Ap
         # ensure that first example is positive
         return 'plant survives' if @predictions.count.zero?
 
+        generate_hypotheses_sets
+        prediction_outcome
+        create_hypotheses_JSON_file
+
+        @result
+      end
+
+      private
+
+      def generate_hypotheses_sets
         hypotheses = Ap::Algorithm::HypothesesSets.new(@predictions, @empty_slot)
         sets = hypotheses.analyze
         @G = sets[:general]
         @S = sets[:specific]
-
-        @U = Ap::Algorithm::UncertainOutcomes.new(
-          @G, @S, @prediction_to_analyze, @empty_slot
-        ).generate
-
-        create_hypotheses_JSON_file
-        prediction_outcome
       end
 
-      private
+      def prediction_outcome
+        analyzer = Ap::Algorithm::AnalyzeOutcome.new(@G, @S, @prediction_to_analyze, @empty_slot)
+        @result = analyzer.perform
+        @U = analyzer.uncertain_set
+      end
 
       def create_hypotheses_JSON_file
         version_space = {}
@@ -45,10 +52,6 @@ module Ap
 
           f.puts JSON.pretty_generate(version_space)
         end
-      end
-
-      def prediction_outcome
-        Ap::Algorithm::AnalyzeOutcome.new(@G, @S, @U, @prediction_to_analyze, @empty_slot).perform
       end
 
     end

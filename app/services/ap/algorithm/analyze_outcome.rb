@@ -1,10 +1,9 @@
 module Ap
   module Algorithm
     class AnalyzeOutcome
-      def initialize(general_set, specific_set, uncertain_set, prediction, empty_slot)
+      def initialize(general_set, specific_set, prediction, empty_slot)
         @G = general_set
         @S = specific_set
-        @U = uncertain_set
 
         @prediction = prediction
         @empty_slot = empty_slot
@@ -15,6 +14,11 @@ module Ap
         @matches_G = levels_of_matching(@G)
 
         prediction_outcome
+      end
+
+      def uncertain_set
+        @U if @U.present?
+        [@empty_slot]
       end
 
       private
@@ -32,6 +36,9 @@ module Ap
         elsif @matches_S < 45 and general_death_evaluation
           'plant dies S:' + @matches_S.to_s
         else
+          # generate only if we have uncertainty
+          @U = Ap::Algorithm::UncertainOutcomes.new(@G, @S, @prediction, @empty_slot).generate
+
           #TODO: analyze here @U - uncertain set
           'uncertain S:' + @matches_S.to_s
         end

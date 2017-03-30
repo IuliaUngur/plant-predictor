@@ -43,7 +43,7 @@ module Ap
 
       def analyze_data
         @prediction_example_set.each do |prediction|
-          if prediction.result.include?("plant survives")
+          if prediction.result.include?("survives")
 
             # Prune G to exclude descriptions inconsistent with the positive example.
             @G.each do |hypothesis|
@@ -65,7 +65,7 @@ module Ap
               end
             end
 
-          elsif prediction.result.include?("plant dies")
+          elsif prediction.result.include?("dies")
 
             # Specialize G to exclude the negative example
             @S.each do |hypothesis|
