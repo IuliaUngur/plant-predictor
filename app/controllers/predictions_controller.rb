@@ -23,7 +23,7 @@ class PredictionsController < ApplicationController
   end
 
   def create
-    creator = Ap::PredictionCreation.new(creation_params)
+    creator = Ap::CreatorsModifiers::PredictionCreation.new(creation_params)
 
     if creator.perform
       render json: {
@@ -52,7 +52,7 @@ class PredictionsController < ApplicationController
     predictions = Prediction.predictions_with_sensors(params[:prediction_type]).distinct
 
     if predictions.destroy_all
-      Ap::EmptyJsonFiles.new(params[:prediction_type]).perform
+      Ap::CreatorsModifiers::EmptyJsonFiles.new(params[:prediction_type]).perform
       render json: { predictions: [], src: json_files_contents }, status: 200
     else
       render json: { error: "Could not delete all simulation predictions" }, status: 400
