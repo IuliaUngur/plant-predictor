@@ -39,7 +39,32 @@ var ReactLivePrediction = React.createClass({
               />
             </div>
           </div>
-          <hr/>
+
+          <hr/><br/>
+
+          <div className="col-lg-8">
+            <strong className="pull-left" style={{paddingTop: '5px'}}>Select plant for prediction:</strong>
+            <div className="form-group col-lg-6">
+              <select className="form-control" name="plant-selector">
+                <option value="basil">basil</option>
+                <option value="tomato">tomato</option>
+                <option value="banana">banana</option>
+                <option value="potato">potato</option>
+                <option value="beans">beans</option>
+                <option value="rice">rice</option>
+                <option value="wheat">wheat</option>
+                <option value="corn">corn</option>
+                <option value="aloe">aloe</option>
+              </select>
+            </div>
+            <button type="button" className="btn btn-default pull-left">Load Training Data</button>
+          </div>
+
+          <button type="button" className="btn btn-default pull-right" onClick={this.resetPredictions}>
+            Clear Simulation
+          </button>
+
+          <br/><br/><hr/>
           <h3>Sensor Inputs</h3>
           <br/>
           <ReactSensorInputs
@@ -51,9 +76,6 @@ var ReactLivePrediction = React.createClass({
           <hr/>
           <h3>Readings</h3>
           <ReactPredictionTable predictions={this.state.predictions} />
-          <button type="button" className="btn btn-default" onClick={this.resetPredictions}>
-            Clear Simulation
-          </button>
         </div>
       </div>
     );
