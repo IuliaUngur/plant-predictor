@@ -50,4 +50,8 @@ module PredictionHelper
       light: %w(DARK MOONLIGHT FOG CLEAR SUNNY)
     }
   end
+
+  def available_plants
+    %w(potato beans rice wheat corn)
+  end
 end

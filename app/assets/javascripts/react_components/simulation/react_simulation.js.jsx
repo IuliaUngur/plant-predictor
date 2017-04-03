@@ -3,6 +3,7 @@ var ReactSimulation = React.createClass({
     predictions: React.PropTypes.array,
     access_id: React.PropTypes.number,
     sensor_values: React.PropTypes.object,
+    available_plants: React.PropTypes.array,
 
     src_simulation: React.PropTypes.string
   },
@@ -26,7 +27,18 @@ var ReactSimulation = React.createClass({
             height={450}
           />
 
-          <hr/>
+          <hr/><br/>
+
+          <ReactDataLoad
+            available_plants={this.props.available_plants}
+            selected_predictions={this.selectedPredictions}
+          />
+
+          <button type="button" className="btn btn-default pull-right" onClick={this.resetPredictions}>
+            Clear Simulation
+          </button>
+
+          <br/><br/><hr/>
           <h3>Sensor Inputs</h3>
           <br/>
           <ReactSensorInputs
@@ -38,7 +50,6 @@ var ReactSimulation = React.createClass({
           <hr/>
           <h3>Readings</h3>
           <ReactPredictionTable predictions={this.state.predictions} />
-          <button type="button" className="btn btn-default" onClick={this.resetPredictions}>Clear Simulation</button>
         </div>
       </div>
     );
@@ -55,6 +66,10 @@ var ReactSimulation = React.createClass({
   deleteRequestSuccess: function(response){
     document.sensorForm.reset();
     this.setState({ predictions: response.predictions, src: response.src.simulation });
+  },
+
+  loadRequestSuccess: function(response){
+    this.setState({ predictions: response.predictions });
   },
 
   requestError: function(response){
@@ -92,6 +107,19 @@ var ReactSimulation = React.createClass({
       url: '/predictions/' + this.props.access_id,
       data: { prediction_type: 'simulation' },
       success: this.deleteRequestSuccess,
+      error: this.requestError
+    });
+  },
+
+  selectedPredictions: function(selection){
+    $.ajax({
+      type: 'GET',
+      url: '/predictions/' + this.props.access_id + '/load',
+      data: {
+        prediction_type: 'simulation',
+        selection: selection
+      },
+      success: this.loadRequestSuccess,
       error: this.requestError
     });
   }
