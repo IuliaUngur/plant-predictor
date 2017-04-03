@@ -6,6 +6,7 @@ var ReactLivePrediction = React.createClass({
     predictions: React.PropTypes.array,
     access_id: React.PropTypes.number,
     sensor_values: React.PropTypes.object,
+    available_plants: React.PropTypes.array
   },
 
   getInitialState: function(){
@@ -42,23 +43,10 @@ var ReactLivePrediction = React.createClass({
 
           <hr/><br/>
 
-          <div className="col-lg-8">
-            <strong className="pull-left" style={{paddingTop: '5px'}}>Select plant for prediction:</strong>
-            <div className="form-group col-lg-6">
-              <select className="form-control" name="plant-selector">
-                <option value="basil">basil</option>
-                <option value="tomato">tomato</option>
-                <option value="banana">banana</option>
-                <option value="potato">potato</option>
-                <option value="beans">beans</option>
-                <option value="rice">rice</option>
-                <option value="wheat">wheat</option>
-                <option value="corn">corn</option>
-                <option value="aloe">aloe</option>
-              </select>
-            </div>
-            <button type="button" className="btn btn-default pull-left">Load Training Data</button>
-          </div>
+          <ReactDataLoad
+            available_plants={this.props.available_plants}
+            selected_predictions={this.selectedPredictions}
+          />
 
           <button type="button" className="btn btn-default pull-right" onClick={this.resetPredictions}>
             Clear Simulation
@@ -102,6 +90,10 @@ var ReactLivePrediction = React.createClass({
     });
   },
 
+  loadRequestSuccess: function(response){
+    this.setState({ predictions: response.predictions });
+  },
+
   requestError: function(response){
     alert(response.responseJSON.error);
     document.sensorForm.reset();
@@ -137,6 +129,19 @@ var ReactLivePrediction = React.createClass({
       url: '/predictions/' + this.props.access_id,
       data: { prediction_type: 'live' },
       success: this.deleteRequestSuccess,
+      error: this.requestError
+    });
+  },
+
+  selectedPredictions: function(selection){
+    $.ajax({
+      type: 'GET',
+      url: '/predictions/' + this.props.access_id + '/load',
+      data: {
+        prediction_type: 'live',
+        selection: selection
+      },
+      success: this.loadRequestSuccess,
       error: this.requestError
     });
   }

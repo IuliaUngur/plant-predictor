@@ -59,6 +59,12 @@ class PredictionsController < ApplicationController
     end
   end
 
+  def load
+    data = predictions_selected.map { |prediction| prediction.sensor_result_set }
+
+    render json: { predictions: data }, status: 200
+  end
+
   private
 
   def creation_params
@@ -67,6 +73,10 @@ class PredictionsController < ApplicationController
 
   def update_params
     params.permit(:result, :id)
+  end
+
+  def load_params
+    params.permit(:id, :selection, :prediction_type)
   end
 
   def prediction_access_id(environment)
@@ -95,5 +105,13 @@ class PredictionsController < ApplicationController
       live: json_read(live_hypotheses_path),
       readings: json_read(sensor_readings_path)
     }
+  end
+
+  def predictions_selected
+    if load_params[:selection].empty?
+      Prediction.predictions_with_sensors(load_params[:prediction_type]).distinct
+    else
+      Prediction.where("result LIKE ?", "#{load_params[:selection]}%")
+    end
   end
 end

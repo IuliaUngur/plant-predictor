@@ -1,10 +1,43 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
-
 Prediction.create(environment: "simulation")
 Prediction.create(environment: "live")
+
+potato = Prediction.create(environment: "data", result: "potato survives")
+beans = Prediction.create(environment: "data", result: "beans survives")
+rice = Prediction.create(environment: "data", result: "rice survives")
+wheat = Prediction.create(environment: "data", result: "wheat survives")
+corn = Prediction.create(environment: "data", result: "corn survives")
+
+Sensor.create(name: "light", measurement: "limited", value: "DARK", prediction: potato)
+Sensor.create(name: "temperature", measurement: "limited", value: "HOT", prediction: potato)
+Sensor.create(name: "vibration", measurement: "continuous", value: "33", prediction: potato)
+Sensor.create(name: "humidity", measurement: "continuous", value: "33", prediction: potato)
+Sensor.create(name: "raindrop", measurement: "limited", value: "DRY", prediction: potato)
+Sensor.create(name: "distance", measurement: "limited", value: "NEARBY", prediction: potato)
+
+Sensor.create(name: "light", measurement: "limited", value: "DARK", prediction: beans)
+Sensor.create(name: "temperature", measurement: "limited", value: "HOT", prediction: beans)
+Sensor.create(name: "vibration", measurement: "continuous", value: "33", prediction: beans)
+Sensor.create(name: "humidity", measurement: "continuous", value: "33", prediction: beans)
+Sensor.create(name: "raindrop", measurement: "limited", value: "DRY", prediction: beans)
+Sensor.create(name: "distance", measurement: "limited", value: "NEARBY", prediction: beans)
+
+Sensor.create(name: "light", measurement: "limited", value: "DARK", prediction: rice)
+Sensor.create(name: "temperature", measurement: "limited", value: "HOT", prediction: rice)
+Sensor.create(name: "vibration", measurement: "continuous", value: "33", prediction: rice)
+Sensor.create(name: "humidity", measurement: "continuous", value: "33", prediction: rice)
+Sensor.create(name: "raindrop", measurement: "limited", value: "DRY", prediction: rice)
+Sensor.create(name: "distance", measurement: "limited", value: "NEARBY", prediction: rice)
+
+Sensor.create(name: "light", measurement: "limited", value: "DARK", prediction: wheat)
+Sensor.create(name: "temperature", measurement: "limited", value: "HOT", prediction: wheat)
+Sensor.create(name: "vibration", measurement: "continuous", value: "33", prediction: wheat)
+Sensor.create(name: "humidity", measurement: "continuous", value: "33", prediction: wheat)
+Sensor.create(name: "raindrop", measurement: "limited", value: "DRY", prediction: wheat)
+Sensor.create(name: "distance", measurement: "limited", value: "NEARBY", prediction: wheat)
+
+Sensor.create(name: "light", measurement: "limited", value: "DARK", prediction: corn)
+Sensor.create(name: "temperature", measurement: "limited", value: "HOT", prediction: corn)
+Sensor.create(name: "vibration", measurement: "continuous", value: "33", prediction: corn)
+Sensor.create(name: "humidity", measurement: "continuous", value: "33", prediction: corn)
+Sensor.create(name: "raindrop", measurement: "limited", value: "DRY", prediction: corn)
+Sensor.create(name: "distance", measurement: "limited", value: "NEARBY", prediction: corn)

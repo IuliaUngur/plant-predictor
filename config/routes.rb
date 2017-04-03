@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   get :sensor_readings, controller: 'sensors'
 
   resources :predictions, only: [:create, :update, :destroy], controller: 'predictions' do
+    get :load, on: :member
     get :simulation, on: :collection
     get :live_prediction, on: :collection
   end
