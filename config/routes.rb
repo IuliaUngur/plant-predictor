@@ -1,3 +1,6 @@
+require 'sidekiq/web'
+require 'sidekiq/cron/web'
+
 Rails.application.routes.draw do
   root 'welcome#home'
 
@@ -11,8 +14,6 @@ Rails.application.routes.draw do
     get :live_prediction, on: :collection
   end
 
-  require 'sidekiq/web'
-  require 'sidekiq/cron/web'
   mount Sidekiq::Web, at: '/plant_monitoring'
   Sidekiq::Web.use(Rack::Auth::Basic) do |user, password|
     [user, password] == [Rails.application.secrets.sidekiq_user, Rails.application.secrets.sidekiq_pass]
