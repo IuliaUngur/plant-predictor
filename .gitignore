@@ -23,5 +23,11 @@
 # Ignore Byebug command history file.
 .byebug_history
 
-/public/*.json
-/config/database.yml
+public/sensor_readings.json
+public/simulation_hypotheses.json
+public/live_hypotheses.json
+
+config/secrets.yml
+config/database.yml
+config/sidekiq.yml
+.env
