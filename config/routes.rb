@@ -10,4 +10,11 @@ Rails.application.routes.draw do
     get :simulation, on: :collection
     get :live_prediction, on: :collection
   end
+
+  require 'sidekiq/web'
+  require 'sidekiq/cron/web'
+  mount Sidekiq::Web, at: '/plant_monitoring'
+  Sidekiq::Web.use(Rack::Auth::Basic) do |user, password|
+    [user, password] == [Rails.application.secrets.sidekiq_user, Rails.application.secrets.sidekiq_pass]
+  end
 end

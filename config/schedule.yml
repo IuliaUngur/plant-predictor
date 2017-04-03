@@ -1,0 +1,4 @@
+random_values_readings:
+  cron: "*/5 * * * *"
+  class: "SensorReadingCreator"
+  queue: default
