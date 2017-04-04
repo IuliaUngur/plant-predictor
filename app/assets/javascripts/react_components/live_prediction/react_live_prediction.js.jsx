@@ -6,10 +6,16 @@ var ReactLivePrediction = React.createClass({
     predictions: React.PropTypes.array,
     access_id: React.PropTypes.number,
     sensor_values: React.PropTypes.object,
-    available_plants: React.PropTypes.array
+    available_plants: React.PropTypes.array,
+    reload_time: React.PropTypes.number
   },
 
   getInitialState: function(){
+    var that = this;
+    setInterval(function(){
+      that.reloadPredictions();
+    }, this.props.reload_time);
+
     return{
       predictions: this.props.predictions,
       src_readings: this.props.src_readings,
@@ -91,7 +97,12 @@ var ReactLivePrediction = React.createClass({
   },
 
   loadRequestSuccess: function(response){
-    this.setState({ predictions: response.predictions });
+    this.state.predictions.unshift(response.predictions);
+    this.setState({
+      predictions: this.state.predictions,
+      src_readings: response.src.readings,
+      src_hypotheses: response.src.live
+    });
   },
 
   requestError: function(response){
@@ -136,13 +147,22 @@ var ReactLivePrediction = React.createClass({
   selectedPredictions: function(selection){
     $.ajax({
       type: 'GET',
-      url: '/predictions/' + this.props.access_id + '/load',
+      url: '/predictions/' + this.props.access_id + '/load_data',
       data: {
         prediction_type: 'live',
         selection: selection
       },
       success: this.loadRequestSuccess,
       error: this.requestError
+    });
+  },
+
+  reloadPredictions: function(){
+    $.ajax({
+      type: 'GET',
+      url: '/predictions/reload_predictions',
+      success: this.loadRequestSuccess,
+      error: function(){}
     });
   }
 });

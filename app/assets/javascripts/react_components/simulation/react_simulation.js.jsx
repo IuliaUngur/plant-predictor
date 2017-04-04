@@ -114,7 +114,7 @@ var ReactSimulation = React.createClass({
   selectedPredictions: function(selection){
     $.ajax({
       type: 'GET',
-      url: '/predictions/' + this.props.access_id + '/load',
+      url: '/predictions/' + this.props.access_id + '/load_data',
       data: {
         prediction_type: 'simulation',
         selection: selection

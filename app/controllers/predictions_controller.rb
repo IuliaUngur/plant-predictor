@@ -23,16 +23,7 @@ class PredictionsController < ApplicationController
   end
 
   def create
-    creator = Ap::CreatorsModifiers::PredictionCreation.new(creation_params)
-
-    if creator.perform
-      render json: {
-        predictions: creator.prediction_sensors_with_result,
-        src: json_files_contents
-      }, status: 200
-    else
-      render json: { error: "Could not create set" }, status: 400
-    end
+    create_sensor_set(creation_params)
   end
 
   def update
@@ -59,10 +50,20 @@ class PredictionsController < ApplicationController
     end
   end
 
-  def load
+  def load_data
     data = predictions_selected.map { |prediction| prediction.sensor_result_set }
+    render json: { predictions: data, src: json_files_contents }, status: 200
+  end
 
-    render json: { predictions: data }, status: 200
+  def reload_predictions
+    data = JSON.parse(File.read('public/sensor_readings.json'))
+    predictions = Prediction.predictions_with_sensors("live")
+
+    return render json: {}, status: 400 if data.values.include?("")
+    return create_sensor_set(data.merge(prediction_type: "live")) if predictions.empty?
+
+    return render json: {}, status: 400 if predictions.first.sensors.pluck(:name, :value).to_h == data
+    create_sensor_set(data.merge(prediction_type: "live"))
   end
 
   private
@@ -112,6 +113,19 @@ class PredictionsController < ApplicationController
       Prediction.predictions_with_sensors(load_params[:prediction_type]).distinct
     else
       Prediction.where("result LIKE ?", "#{load_params[:selection]}%")
+    end
+  end
+
+  def create_sensor_set(data)
+    creator = Ap::CreatorsModifiers::PredictionCreation.new(data)
+
+    if creator.perform
+      render json: {
+        predictions: creator.prediction_sensors_with_result,
+        src: json_files_contents
+      }, status: 200
+    else
+      render json: { error: "Could not create set" }, status: 400
     end
   end
 end
