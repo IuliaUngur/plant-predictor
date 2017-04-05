@@ -25,7 +25,7 @@ module Ap
 
         # given that the predictions are already ordered by created_at descending
         # a reverse is applied to get the first prediction
-        first_set = @predictions.shift.sensors
+        first_set = @predictions.reverse.shift.sensors
         @prediction_example_set = @predictions
 
         # S - maximal specific hypotheses in H

@@ -11,7 +11,8 @@ var ReactSimulation = React.createClass({
   getInitialState: function(){
     return{
       predictions: this.props.predictions,
-      src: this.props.src_simulation
+      src: this.props.src_simulation,
+      selection: ''
     }
   },
 
@@ -49,7 +50,10 @@ var ReactSimulation = React.createClass({
 
           <hr/>
           <h3>Readings</h3>
-          <ReactPredictionTable predictions={this.state.predictions} />
+          <ReactPredictionTable
+            predictions={this.state.predictions}
+            plant={this.state.selection}
+          />
         </div>
       </div>
     );
@@ -93,7 +97,8 @@ var ReactSimulation = React.createClass({
         humidity: fields.humidity.value,
         raindrop: fields.raindrop.value,
         distance: fields.distance.value,
-        prediction_type: 'simulation'
+        prediction_type: 'simulation',
+        plant_selection: this.state.selection
       },
       success: this.createRequestSuccess,
       error: this.requestError
@@ -112,12 +117,13 @@ var ReactSimulation = React.createClass({
   },
 
   selectedPredictions: function(selection){
+    this.state.selection = selection;
     $.ajax({
       type: 'GET',
       url: '/predictions/' + this.props.access_id + '/load_data',
       data: {
         prediction_type: 'simulation',
-        selection: selection
+        plant_selection: selection
       },
       success: this.loadRequestSuccess,
       error: this.requestError

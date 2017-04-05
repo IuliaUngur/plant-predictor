@@ -13,6 +13,12 @@ class Prediction < ActiveRecord::Base
       .order(created_at: :desc)
   }
 
+  scope :predictions_on_plants, -> (environment, plant) {
+    predictions_with_sensors(environment)
+      .where("result LIKE ?", "#{plant}%")
+      .distinct
+  }
+
   def sensor_result_set
     p = {}
     sensors.map do |sensor|
