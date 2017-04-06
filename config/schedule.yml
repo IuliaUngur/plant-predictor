@@ -1,4 +1,4 @@
-random_values_readings:
+random_values_writing:
   cron: "*/5 * * * *"
-  class: "SensorReadingCreator"
+  class: "SensorWriter"
   queue: default

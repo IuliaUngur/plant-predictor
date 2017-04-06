@@ -1,6 +1,7 @@
 var ReactPredictionTable = React.createClass({
   propTypes: {
-    predictions: React.PropTypes.array
+    predictions: React.PropTypes.array,
+    plant: React.PropTypes.string
   },
 
   getInitialState: function(){
@@ -81,7 +82,10 @@ var ReactPredictionTable = React.createClass({
     $.ajax({
       type: 'PUT',
       url: '/predictions/' + id,
-      data: { result: value },
+      data: {
+        result: value,
+        plant_selection: this.props.plant
+      },
       success: this.requestSuccess,
       error: this.requestError
     });

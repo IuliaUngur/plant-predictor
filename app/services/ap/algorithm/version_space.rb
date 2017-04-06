@@ -3,13 +3,9 @@ module Ap
     class VersionSpace
       # valid results: plant survives, plant dies, uncertain outcome
 
-      def initialize(prediction)
+      def initialize(prediction, plant)
         @prediction_to_analyze = prediction
-        @predictions = Prediction
-          .predictions_with_sensors(@prediction_to_analyze.environment)
-          .where.not(result: nil)
-          .distinct
-          .reverse
+        @predictions = Prediction.predictions_on_plants([@prediction_to_analyze.environment, 'data'], plant)
 
         @empty_slot = {
           light: '', temperature: '', distance: '', raindrop: '', humidity: '', vibration: ''
@@ -18,7 +14,7 @@ module Ap
 
       def perform
         # ensure that first example is positive
-        return 'plant survives' if @predictions.count.zero?
+        return 'survives' if @predictions.count.zero?
 
         generate_hypotheses_sets
         prediction_outcome

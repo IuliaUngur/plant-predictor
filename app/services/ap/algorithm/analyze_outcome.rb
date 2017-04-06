@@ -32,9 +32,9 @@ module Ap
 
       def compare_matches(general_survive_evaluation, general_death_evaluation)
         if @matches_S > 65 and general_survive_evaluation
-          'plant survives S:' + @matches_S.to_s
+          'survives S:' + @matches_S.to_s
         elsif @matches_S < 45 and general_death_evaluation
-          'plant dies S:' + @matches_S.to_s
+          'dies S:' + @matches_S.to_s
         else
           # generate only if we have uncertainty
           @U = Ap::Algorithm::UncertainOutcomes.new(@G, @S, @prediction, @empty_slot).generate

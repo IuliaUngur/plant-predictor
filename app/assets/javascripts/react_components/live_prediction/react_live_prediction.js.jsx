@@ -6,14 +6,21 @@ var ReactLivePrediction = React.createClass({
     predictions: React.PropTypes.array,
     access_id: React.PropTypes.number,
     sensor_values: React.PropTypes.object,
-    available_plants: React.PropTypes.array
+    available_plants: React.PropTypes.array,
+    reload_time: React.PropTypes.number
   },
 
   getInitialState: function(){
+    var that = this;
+    setInterval(function(){
+      that.reloadPredictions();
+    }, this.props.reload_time);
+
     return{
       predictions: this.props.predictions,
       src_readings: this.props.src_readings,
-      src_hypotheses: this.props.src_hypotheses
+      src_hypotheses: this.props.src_hypotheses,
+      selection: ''
     }
   },
 
@@ -63,7 +70,10 @@ var ReactLivePrediction = React.createClass({
 
           <hr/>
           <h3>Readings</h3>
-          <ReactPredictionTable predictions={this.state.predictions} />
+          <ReactPredictionTable
+            predictions={this.state.predictions}
+            plant={this.state.selection}
+          />
         </div>
       </div>
     );
@@ -85,6 +95,15 @@ var ReactLivePrediction = React.createClass({
     document.sensorForm.reset();
     this.setState({
       predictions: response.predictions,
+      src_readings: response.src.readings,
+      src_hypotheses: response.src.live
+    });
+  },
+
+  reloadRequestSuccess: function(response){
+    this.state.predictions.unshift(response.predictions);
+    this.setState({
+      predictions: this.state.predictions,
       src_readings: response.src.readings,
       src_hypotheses: response.src.live
     });
@@ -115,7 +134,8 @@ var ReactLivePrediction = React.createClass({
         humidity: fields.humidity.value,
         raindrop: fields.raindrop.value,
         distance: fields.distance.value,
-        prediction_type: 'live'
+        prediction_type: 'live',
+        plant_selection: this.state.selection
       },
       success: this.createRequestSuccess,
       error: this.requestError
@@ -134,15 +154,26 @@ var ReactLivePrediction = React.createClass({
   },
 
   selectedPredictions: function(selection){
+    this.state.selection = selection;
     $.ajax({
       type: 'GET',
-      url: '/predictions/' + this.props.access_id + '/load',
+      url: '/predictions/' + this.props.access_id + '/load_data',
       data: {
         prediction_type: 'live',
-        selection: selection
+        plant_selection: selection
       },
       success: this.loadRequestSuccess,
       error: this.requestError
+    });
+  },
+
+  reloadPredictions: function(){
+    $.ajax({
+      type: 'GET',
+      url: '/predictions/reload_predictions',
+      data: { plant_selection: this.state.selection },
+      success: this.reloadRequestSuccess,
+      error: function(){}
     });
   }
 });
