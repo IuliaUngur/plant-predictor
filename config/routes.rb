@@ -17,7 +17,4 @@ Rails.application.routes.draw do
   end
 
   mount Sidekiq::Web, at: '/plant_monitoring'
-  Sidekiq::Web.use(Rack::Auth::Basic) do |user, password|
-    [user, password] == [Rails.application.secrets.sidekiq_user, Rails.application.secrets.sidekiq_pass]
-  end
 end
