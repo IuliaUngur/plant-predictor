@@ -26,6 +26,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc # documentation generator for Ruby code
 gem 'font-awesome-rails' # replacement for bootstrap glyphicons
 gem 'fuzzy-logic', path: "vendor/fuzzy-logic"
 
+gem 'sidekiq'
 gem 'sidekiq-cron', '~> 0.4.0'
 
 group :development do
