@@ -3,15 +3,19 @@ module Ap
     class PredictionCreation
       def initialize(params)
         @params = params
-        selection = @params.delete(:plant_selection)
-        @plant = selection.present? ? selection + " " : "plant "
         @environment = @params.delete(:prediction_type)
+        @result = @params.delete(:result)
+        selection = @params.delete(:plant_selection)
+
+        @plant = selection.present? ? selection + " " : "plant "
       end
 
       def perform
         create_sensors
 
         return false if @prediction.blank?
+        return update(@result) if @result.present?
+
         version_space
       end
 
@@ -22,8 +26,12 @@ module Ap
       private
 
       def version_space
-        result = Ap::Algorithm::VersionSpace.new(@prediction, @plant).perform
-        @prediction.update_attribute(:result, @plant + result)
+        algorithm_result = Ap::Algorithm::VersionSpace.new(@prediction, @plant).perform
+        update(@plant + algorithm_result)
+      end
+
+      def update(result)
+        @prediction.update_attribute(:result, result)
       end
 
       def create_sensors

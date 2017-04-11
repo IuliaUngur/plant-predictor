@@ -23,9 +23,12 @@
 # Ignore Byebug command history file.
 .byebug_history
 
-public/*
+/public/*.json
+/public/exports/*
+/public/imports/*
 
 config/secrets.yml
 config/database.yml
 config/sidekiq.yml
 .env
+.ruby-gemset

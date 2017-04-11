@@ -18,12 +18,11 @@ module Ap
 
       def csv_generator(options = {})
         CSV.open(@path, "wb") do |csv|
-          csv << ["id", "light", "temperature", "vibration",
+          csv << ["light", "temperature", "vibration",
             "humidity", "raindrop", "distance", "result"]
 
           @predictions.each do |prediction|
             data=[]
-            data << prediction.id
             prediction.sensors.each {|sensor| data << sensor.value }
             data << prediction.result
             csv << data
