@@ -5,8 +5,8 @@ module Ap
     class ImportCsv
       def initialize(environment, plant)
         @path = "#{Rails.root}/public/imports/#{environment}_#{plant}.csv"
-        @plant = plant
         @environment = environment
+        @plant = plant
       end
 
       def perform
@@ -20,14 +20,9 @@ module Ap
       end
 
       def import_csv_data
-        sheet = CSV.parse(File.open(@path))
-        header = sheet[0]
-
-        (1...sheet.length).each do |i| # file contains \n at EOF
-          @params = { prediction_type: 'simulation', plant_selection: 'plant' }
-          row =  Hash[[header, sheet[i]].transpose].symbolize_keys
-          @params.merge!(row)
-
+        CSV.foreach(File.open(@path), headers: true) do |row|
+          @params = { prediction_type: @environment, plant_selection: @plant }
+          @params.merge!(row.to_hash.symbolize_keys)
           creator
         end
       end

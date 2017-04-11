@@ -5,9 +5,7 @@ module Ap
     class ExportCsv
       def initialize(environment, plant)
         @predictions = Prediction.predictions_on_plants(environment, plant)
-        @plant = plant
-        @environment = environment
-        @path = "#{Rails.root}/public/exports/#{@environment}_#{@plant}.csv"
+        @path = "#{Rails.root}/public/exports/#{environment}_#{plant}.csv"
       end
 
       def perform
@@ -16,7 +14,7 @@ module Ap
 
       private
 
-      def csv_generator(options = {})
+      def csv_generator
         CSV.open(@path, "wb") do |csv|
           csv << ["light", "temperature", "vibration",
             "humidity", "raindrop", "distance", "result"]
