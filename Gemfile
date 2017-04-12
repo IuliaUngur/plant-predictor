@@ -29,6 +29,8 @@ gem 'fuzzy-logic', path: "vendor/fuzzy-logic"
 gem 'sidekiq'
 gem 'sidekiq-cron', '~> 0.4.0'
 
+gem 'fselector', path: "vendor/fselector"
+
 group :development do
   gem 'foreman'
   gem 'dotenv-rails'
