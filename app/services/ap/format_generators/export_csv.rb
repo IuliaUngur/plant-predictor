@@ -16,13 +16,11 @@ module Ap
 
       def csv_generator
         CSV.open(@path, "wb") do |csv|
-          csv << ["light", "temperature", "vibration",
-            "humidity", "raindrop", "distance", "result"]
-
           @predictions.each do |prediction|
             data=[]
             prediction.sensors.each {|sensor| data << sensor.value }
-            data << prediction.result
+            result = prediction.result.include?("dies") ? "dies" : "survives"
+            data << result
             csv << data
           end
         end
