@@ -1,114 +1,146 @@
+### Explanations
+  # 1. extract average values from predictions where plant survives
+  # 2. extract scores of each attribute in predictions
+  # 3. generate combinations of values from S or G
+  #       => S = T1,L1,H1 , Prediction = T2,L2,H2,V2,D2,R2
+  #       1. T1,L1,H1,V2,D2,R2; 2. T1,L1,H2,V2,D2,R2; 3. T1,L2,H2,V2,D2,R2;
+  # 4. grades on average values (with scores from fselector)
+  # 5. grades on combinations (with scores from fselector)
+  # 6. compare each combination score with avg score
+        # <50 dies, >50 survives, 50 - uncertain
+        # eg: if average on temp is 25, and prediction is with 10 => 10 * 100 / 25
+        #       => 40% => 40 < 50 (and anything above) dies 80% (40% * 2)
+        #     if average on humid is 30, and prediction is with 25 => 25 * 100 / 30 =>
+        #       => 83% => 83% > 50% => 83-50 = 33% => 33 * 2= 66% => survives with 66%
+
+  # 7. final value of uncertain rule is based on voting: greatest on average wins =>
+  #     => max(avg(dies), avg(survives)) => 80% dies
+###
+
 module Ap
   module Algorithm
     class UncertainOutcomes
-      def initialize(general_set, specific_set, prediction, empty_slot)
+      def initialize(general_set, specific_set, prediction_to_analyze, predictions, empty_slot)
         @G = general_set
         @S = specific_set
-        @prediction = prediction
+        @prediction_to_analyze = prediction_to_analyze
+        @predictions = predictions
         @empty_slot = empty_slot
 
         @combinations = {}
+        @combinations_result = { dies: [], survives: [] }
         @absent = []
         @different = []
+
+        @average_survival = empty_slot
       end
 
-      def generate
-        # [WIP]
+      def perform
+        analyze_prediction
+      end
 
-        # TODO: generate all combinations from :
-        #     values that are not mentioned in S
-        #     and values that are in G
-        # eg: G = {temp = cold}, S={light = dark, temp=cold, humid = high}
-        #     not_in_S={distance, raindrop, vibration}
-        #     U = {Combinations of( temp= cold, all(distance), all(raindrop), all(vibration))}
+      def values
+        @U
+      end
 
-        # #########################################################################
-
-        # Extract values that are not mentioned in S (absent or different)
-        generate_absent_different_values
-
-        if @G == [@empty_slot]
-          # If G is empty, generate posibilities to fill S with the given prediction
-          combinations_on_specific
-        else
-          # If G is not empty, take absent/different values from S and generate combinations from
-          # G with values given from prediction where S values are missing
-          combinations_on_general
-        end
-
-        # Assign those combinations values of truth based on average of other prediction values where
-        # the plant survived 100%
-        # if = 100% ok, if > 150% dies if < 50% dies, in between ok
-        # eg: if average on temp is 25, and prediction is with 10 => 25 * 100 / 10
-        #       => 250% => 250-150 = 100 (and anything above) dies 100%
-        #     if average on humid is 30, and prediction is with 25 => 25 * 100 / 30 =>
-        #       => 83% => 50% < 83% < 150% => 83-50 = 23% survives with 23%
-        #     final value of uncertain rule is based on voting: greatest on average wins =>
-        #       => max(avg(dies), avg(survives)) => 100% dies
-
-        find_needed_averages
-        assign_truth_levels
-
-        # Return Uncertain Set <Placeholder>
-        @U = [@empty_slot]
+      def result
+        @result
       end
 
       private
 
-      def generate_absent_different_values
-        @S.each do |hypothesis|
-          hypothesis.each do |input|
-            # input = [name, value]
-            sensor = @prediction.sensors.find_by(name: input.first)
+      def analyze_prediction
+        average_survival_conditions
+        attribute_learning_scores
 
-            if input.last.empty?
-              @absent << input.first.to_s if input.last.empty?
-            else
-              @different << [sensor.name.to_sym, sensor.value] if sensor.value != input.last
-            end
+        if @G == [@empty_slot]
+          generate_combinations(@S)
+        else
+          generate_combinations(@G)
+        end
+
+        @average_survival = grade_set(@average_survival)
+        grade_combinations
+
+        assign_procentages
+        compare_combinations
+
+        @result = vote_final_value
+      end
+
+      def average_survival_conditions
+        survival_predictions = @predictions.where('result LIKE ?', '%survives%')
+        no_survivals = survival_predictions.count
+
+        survival_predictions.each do |prediction|
+          prediction.sensors.each do |sensor|
+            @average_survival[sensor.name.to_sym] += (sensor.value / no_survivals)
           end
         end
       end
 
-      def combinations_on_specific
-        # format on different eg:
+      def attribute_learning_scores
+        plant_name = @predictions.first.result.split.first
+        file = @predictions.first.environment + '_' + plant_name
 
-        #   @different = [[:temperature, "COOL"], [:distance, "CLOSE"], [:humidity, "11"]]
-        #   @S.first = {:light=>"DARK", :temperature=>"HOT", :distance=>"NEARBY", :raindrop=>"DRY", :humidity=>"33", :vibration=>"33"}
+        fselector = Ap::Algorithm:FselectorFilter.new(file)
+        fselector.perform
 
-        #   keys conflict = [:temperature, :distance, :humidity]
-        #   exclude conflict keys from S=> new_s = {:light=>"DARK", :raindrop=>"DRY", :vibration=>"33"}
-        #   the 2 arrays to create combinations from: new_s.to_a and @different
+        @scores = fselector.scores
+      end
 
+      # TODO
+      def generate_combinations(set)
+        set.each do |hypotheses|
 
-        if @absent.empty? and @different.present?
-          @S.each do |h|
-            only_specific = h
+        end
+      end
 
-            common_keys = h.keys - @different.to_h.keys
-            set_keys = h.keys - common_keys
-            set_keys.each { |key| only_specific.except!(key) }
+      def grade_combinations
+        @combinations.each do |combination|
+          combination = grade_set(combination)
+        end
+      end
 
-            create_combinations(only_specific, @different)
+      def grade_set(set)
+        @empty_slot.keys.each do |attribute|
+          set[attribute] *= @scores[attribute]
+        end
+      end
+
+      def assign_procentages
+        @combinations.each do |combination|
+          sum = 0
+          @empty_slot.keys.each do |attribute|
+            sum += (combination[attribute] * 100 / @average_survival[attribute])
+          end
+          combination[:result] = sum
+        end
+      end
+
+      def compare_combinations
+        @combinations.each do |combination|
+          if combination[:result] < 50
+            @combinations_result[:dies] << combination[:result] * 2 # procent out of 100
+          else
+            @combinations_result[:survival] << (50 - combination[:result]) * 2 # procent out of 100
           end
         end
-
       end
 
-      def combinations_on_general
+      def vote_final_value
+        average_dies = average(@combinations_result[:dies])
+        average_survives = average(@combinations_result[:survival])
 
+        if [average_dies, average_survives].max == average_dies
+          'dies with ' + average_dies.to_s + '%'
+        else
+          'survives with ' + average_survives.to_s + '%'
+        end
       end
 
-      def find_needed_averages
-
-      end
-
-      def assign_truth_levels
-
-      end
-
-      def create_combinations(a, b)
-
+      def average(list)
+        list.sum / list.size.to_f
       end
     end
   end

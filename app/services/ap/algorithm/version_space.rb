@@ -33,7 +33,7 @@ module Ap
       end
 
       def prediction_outcome
-        analyzer = Ap::Algorithm::AnalyzeOutcome.new(@G, @S, @prediction_to_analyze, @empty_slot)
+        analyzer = Ap::Algorithm::AnalyzeOutcome.new(@G, @S, @prediction_to_analyze, @predictions, @empty_slot)
         @result = analyzer.perform
         @U = analyzer.uncertain_set
       end

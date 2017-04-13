@@ -1,11 +1,12 @@
 module Ap
   module Algorithm
     class AnalyzeOutcome
-      def initialize(general_set, specific_set, prediction, empty_slot)
+      def initialize(general_set, specific_set, prediction_to_analyze, predictions, empty_slot)
         @G = general_set
         @S = specific_set
 
-        @prediction = prediction
+        @prediction_to_analyze = prediction_to_analyze
+        @predictions = predictions
         @empty_slot = empty_slot
       end
 
@@ -36,18 +37,20 @@ module Ap
         elsif @matches_S < 45 and general_death_evaluation
           'dies S:' + @matches_S.to_s
         else
-          # generate only if we have uncertainty
-          @U = Ap::Algorithm::UncertainOutcomes.new(@G, @S, @prediction, @empty_slot).generate
+          uncertain = Ap::Algorithm::UncertainOutcomes
+            .new(@G, @S, @prediction_to_analyze, @predictions, @empty_slot)
 
-          #TODO: analyze here @U - uncertain set
-          'uncertain S:' + @matches_S.to_s
+          uncertain.perform
+
+          @U = uncertain.values
+          uncertain.result
         end
       end
 
       def levels_of_matching(set)
         matches = 0
         set.each do |hypothesis|
-          @prediction.sensors.each do |sensor|
+          @prediction_to_analyze.sensors.each do |sensor|
             if sensor.value.to_i.zero? || hypothesis[sensor.name.to_sym] == ""
               matches += 1 if ["", sensor.value].include?(hypothesis[sensor.name.to_sym])
             else
