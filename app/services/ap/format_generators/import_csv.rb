@@ -7,6 +7,8 @@ module Ap
         @path = "#{Rails.root}/public/imports/#{environment}_#{plant}.csv"
         @environment = environment
         @plant = plant
+        @header = [:light, :temperature, :vibration, :humidity,
+          :raindrop,:distance,:result]
       end
 
       def perform
@@ -20,9 +22,9 @@ module Ap
       end
 
       def import_csv_data
-        CSV.foreach(File.open(@path), headers: true) do |row|
+        CSV.foreach(File.open(@path), headers: false) do |row|
           @params = { prediction_type: @environment, plant_selection: @plant }
-          @params.merge!(row.to_hash.symbolize_keys)
+          @params.merge!(Hash[[@header, row].transpose])
           creator
         end
       end

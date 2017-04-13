@@ -14,7 +14,7 @@ module Ap
         create_sensors
 
         return false if @prediction.blank?
-        return update(@result) if @result.present?
+        return update(@plant + @result) if @result.present?
 
         version_space
       end
