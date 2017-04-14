@@ -74,6 +74,7 @@ module Ap
 
         survival_predictions.each do |prediction|
           prediction.sensors.each do |sensor|
+            # careful on average for string values
             @average_survival[sensor.name.to_sym] += (sensor.value / no_survivals)
           end
         end
@@ -83,7 +84,7 @@ module Ap
         plant_name = @predictions.first.result.split.first
         file = @predictions.first.environment + '_' + plant_name
 
-        fselector = Ap::Algorithm:FselectorFilter.new(file)
+        fselector = Ap::Algorithm::FselectorFilter.new(file)
         fselector.perform
 
         @scores = fselector.scores

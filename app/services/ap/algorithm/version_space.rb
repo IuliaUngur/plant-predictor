@@ -6,10 +6,6 @@ module Ap
       def initialize(prediction, plant)
         @prediction_to_analyze = prediction
         @predictions = Prediction.predictions_on_plants([@prediction_to_analyze.environment, 'data'], plant)
-
-        @empty_slot = {
-          light: '', temperature: '', distance: '', raindrop: '', humidity: '', vibration: ''
-        }
       end
 
       def perform
@@ -26,14 +22,16 @@ module Ap
       private
 
       def generate_hypotheses_sets
-        hypotheses = Ap::Algorithm::HypothesesSets.new(@predictions, @empty_slot)
+        hypotheses = Ap::Algorithm::HypothesesSets.new(@predictions, empty_slot)
         sets = hypotheses.analyze
         @G = sets[:general]
         @S = sets[:specific]
       end
 
       def prediction_outcome
-        analyzer = Ap::Algorithm::AnalyzeOutcome.new(@G, @S, @prediction_to_analyze, @predictions, @empty_slot)
+        analyzer = Ap::Algorithm::AnalyzeOutcome.new(
+          @G, @S, @prediction_to_analyze, @predictions, empty_slot
+        )
         @result = analyzer.perform
         @U = analyzer.uncertain_set
       end
@@ -44,10 +42,21 @@ module Ap
         File.open("public/#{@prediction_to_analyze.environment}_hypotheses.json", 'w') do |f|
           version_space[:general] = Hash[@G.map.with_index.to_a].invert
           version_space[:specific] = Hash[@S.map.with_index.to_a].invert
-          version_space[:uncertain] = Hash[@U.map.with_index.to_a].invert if @U != [@empty_slot]
+          version_space[:uncertain] = Hash[@U.map.with_index.to_a].invert if @U != [empty_slot]
 
           f.puts JSON.pretty_generate(version_space)
         end
+      end
+
+      def empty_slot
+        {
+          light: '',
+          temperature: '',
+          distance: '',
+          raindrop: '',
+          humidity: '',
+          vibration: ''
+        }
       end
 
     end
