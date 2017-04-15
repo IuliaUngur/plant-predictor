@@ -10,43 +10,26 @@ module FSelector
   VERSION = '1.4.0'
 end
 
-# the root dir of FSelector
-ROOT = File.expand_path(File.dirname(__FILE__))
-
 #
 # include necessary files
 #
 # read and write file, supported formats include CSV, LibSVM and WEKA files
-require "#{ROOT}/fselector/fileio.rb"
+require_relative "fselector/fileio.rb"
 # extend Array and String class
-require "#{ROOT}/fselector/util.rb"
+require_relative "fselector/util.rb"
 # check data consistency
-require "#{ROOT}/fselector/consistency.rb"
+require_relative "fselector/consistency.rb"
 # entropy-related functions
-require "#{ROOT}/fselector/entropy.rb"
+require_relative "fselector/entropy.rb"
 # normalization for continuous data
-require "#{ROOT}/fselector/normalizer.rb"
+require_relative "fselector/normalizer.rb"
 # discretization for continuous data
-require "#{ROOT}/fselector/discretizer.rb"
+require_relative "fselector/discretizer.rb"
 # replace missing values
-require "#{ROOT}/fselector/replace_missing_values.rb"
+require_relative "fselector/replace_missing_values.rb"
 
-#
-# base class
-#
-Dir.glob("#{ROOT}/fselector/algo_base/*").each do |f|
-  require f
-end
+require_relative "fselector/base.rb"
+require_relative "fselector/base_discrete.rb"
+require_relative "fselector/InformationGain.rb"
 
-#
-# algorithms for handling discrete feature
-#
-Dir.glob("#{ROOT}/fselector/algo_discrete/*").each do |f|
-  require f
-end
-
-#
-# feature selection use an ensemble of algorithms
-#
-require "#{ROOT}/fselector/ensemble.rb"
-
+require_relative "fselector/ensemble.rb"
