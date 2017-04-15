@@ -24,6 +24,13 @@ Installation:
     * `rake db:migrate`
     * `rake db:seed`
 
+  - For fselector dependencies:
+    * install R:
+      * `sudo apt-get update`
+      * `sudo apt-get install r-base`
+      * `sudo apt-get install r-base-dev`
+      * `sudo apt-get install r-base-core`
+
   - For hardware setup:
     * install Arduino IDE from: [Arduino](https://www.arduino.cc/en/Main/Software)
     * install Processing from: [Processing](https://processing.org/download/?processing)
