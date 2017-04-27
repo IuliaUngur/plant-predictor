@@ -7,12 +7,12 @@ class SensorWriter < ActiveJob::Base
 
   def writing_JSON_file
     sensor_values = {
-      temperature: Ap::Fuzzy::SensorValues::TEMPERATURE.sample,
-      light: Ap::Fuzzy::SensorValues::LIGHT.sample,
+      temperature: TEMPERATURE.sample,
+      light: LIGHT.sample,
       vibration: rand(1000).to_s,
-      distance: Ap::Fuzzy::SensorValues::DISTANCE.sample,
+      distance: DISTANCE.sample,
       humidity: rand(100).to_s,
-      raindrop: Ap::Fuzzy::SensorValues::RAINDROP.sample
+      raindrop: RAINDROP.sample
     }
 
     File.open("public/sensor_readings.json", 'w') do |f|

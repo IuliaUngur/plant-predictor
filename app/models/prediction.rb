@@ -26,4 +26,12 @@ class Prediction < ActiveRecord::Base
     end
     p.merge!(result: result.to_s, id: id)
   end
+
+  def sensor_set
+    p = {}
+    sensors.map do |sensor|
+      p.merge!(sensor.name.to_sym => sensor.value)
+    end
+    p
+  end
 end

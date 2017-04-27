@@ -20,44 +20,49 @@
 module Ap
   module Algorithm
     class UncertainOutcomes
-      def initialize(general_set, specific_set, prediction_to_analyze, predictions, empty_slot)
+      def initialize(general_set, specific_set, prediction_to_analyze, predictions, scores)
         @G = general_set
         @S = specific_set
         @prediction_to_analyze = prediction_to_analyze
         @predictions = predictions
-        @empty_slot = empty_slot
+        @scores = scores
 
-        @combinations = {}
         @combinations_result = { dies: [], survives: [] }
-        @absent = []
-        @different = []
-
-        @average_survival = empty_slot
+        @average_survival = {
+          light: 0.0,
+          temperature: 0.0,
+          distance: 0.0,
+          raindrop: 0.0,
+          humidity: 0.0,
+          vibration: 0.0
+        }
       end
 
       def perform
-        analyze_prediction
+        # analyze_prediction
       end
 
       def values
-        @U
+        [EMPTY_SLOT]
       end
 
       def result
-        @result
+        # @result
+        'uncertain'
       end
 
       private
 
       def analyze_prediction
         average_survival_conditions
-        attribute_learning_scores
 
-        if @G == [@empty_slot]
-          generate_combinations(@S)
+        if @G == [EMPTY_SLOT]
+          @combinations = Ap::Algorithm::UncertainCombinations.new(@S,@prediction_to_analyze).perform
         else
-          generate_combinations(@G)
+          @combinations = Ap::Algorithm::UncertainCombinations.new(@G,@prediction_to_analyze).perform
         end
+
+        require 'pry'; binding.pry
 
         @average_survival = grade_set(@average_survival)
         grade_combinations
@@ -74,27 +79,19 @@ module Ap
 
         survival_predictions.each do |prediction|
           prediction.sensors.each do |sensor|
-            # careful on average for string values
-            @average_survival[sensor.name.to_sym] += (sensor.value / no_survivals)
+            if sensor.value.to_i.zero?
+              sensor_constant_values = sensor.name.to_s.upcase.constantize
+              @average_survival[sensor.name.to_sym] +=
+                (sensor_constant_values.find_index(sensor.value).to_f / no_survivals)
+            else
+              @average_survival[sensor.name.to_sym] += (sensor.value.to_f / no_survivals)
+            end
           end
         end
-      end
 
-      def attribute_learning_scores
-        plant_name = @predictions.first.result.split.first
-        file = @predictions.first.environment + '_' + plant_name
-
-        fselector = Ap::Algorithm::FselectorFilter.new(file)
-        fselector.perform
-
-        @scores = fselector.scores
-      end
-
-      # TODO
-      def generate_combinations(set)
-        set.each do |hypotheses|
-
-        end
+        # average_survival needed as is for calculating procentages
+        @avg_classified_values = @average_survival.clone
+        convert_to_classes(@avg_classified_values)
       end
 
       def grade_combinations
@@ -104,7 +101,7 @@ module Ap
       end
 
       def grade_set(set)
-        @empty_slot.keys.each do |attribute|
+        EMPTY_SLOT.keys.each do |attribute|
           set[attribute] *= @scores[attribute]
         end
       end
@@ -112,7 +109,7 @@ module Ap
       def assign_procentages
         @combinations.each do |combination|
           sum = 0
-          @empty_slot.keys.each do |attribute|
+          EMPTY_SLOT.keys.each do |attribute|
             sum += (combination[attribute] * 100 / @average_survival[attribute])
           end
           combination[:result] = sum
@@ -142,6 +139,19 @@ module Ap
 
       def average(list)
         list.sum / list.size.to_f
+      end
+
+
+      ############
+
+      def convert_to_classes(set)
+        set.keys.each do |sensor|
+          if Object.constants.include?(sensor.upcase)
+            set[sensor] = sensor.to_s.upcase.constantize[set[sensor].round]
+          else
+            set[sensor] = set[sensor].round
+          end
+        end
       end
     end
   end
