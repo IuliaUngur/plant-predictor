@@ -1,5 +1,5 @@
 module Ap
-  module Algorithm
+  module UncertainProcessing
     class UncertainCombinations
       def initialize(set, prediction_to_analyze)
         @set = set
@@ -54,7 +54,8 @@ module Ap
 
             # For each combination, attach the intersection + prediction replaced features => set_intersect_prediction
             generated_combinations.each do |combination|
-              @combinations << Hash[[keys_used, combination].transpose].merge(set_intersect_prediction)
+              set = Hash[[keys_used, combination].transpose].merge(set_intersect_prediction)
+              @combinations << set if set != hypotheses
             end
           end
         end

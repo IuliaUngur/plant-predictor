@@ -18,8 +18,7 @@ module Ap
       end
 
       def uncertain_set
-        @U if @U.present?
-        [EMPTY_SLOT]
+        @U.present? ? @U : [EMPTY_SLOT]
       end
 
       private
@@ -65,7 +64,7 @@ module Ap
         elsif @matches_S < 45 and general_death_evaluation
           'dies S:' + @matches_S.to_s
         else
-          uncertain = Ap::Algorithm::UncertainOutcomes
+          uncertain = Ap::UncertainProcessing::UncertainOutcomes
             .new(@G, @S, @prediction_to_analyze, @predictions, @scores)
 
           uncertain.perform
