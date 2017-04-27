@@ -1,15 +1,18 @@
 module Ap
   module Algorithm
     class AnalyzeOutcome
-      def initialize(general_set, specific_set, prediction, empty_slot)
+      def initialize(general_set, specific_set, prediction_to_analyze, predictions, plant)
         @G = general_set
         @S = specific_set
 
-        @prediction = prediction
-        @empty_slot = empty_slot
+        @prediction_to_analyze = prediction_to_analyze
+        @predictions = predictions
+
+        @plant = plant
       end
 
       def perform
+        generate_scores
         @matches_S = levels_of_matching(@S)
         @matches_G = levels_of_matching(@G)
 
@@ -17,14 +20,47 @@ module Ap
       end
 
       def uncertain_set
-        @U if @U.present?
-        [@empty_slot]
+        @U.present? ? @U : [EMPTY_SLOT]
       end
 
       private
 
+      def generate_scores
+        file_env = @prediction_to_analyze.environment + '_' + @plant
+        file_data = 'data_' + @plant
+
+        Ap::FormatGenerators::ExportCsv.new(@prediction_to_analyze.environment, @plant).perform
+        Ap::FormatGenerators::ExportCsv.new('data', @plant).perform
+
+        fselector_env = Ap::Algorithm::FselectorFilter.new(file_env)
+        fselector_env.perform
+
+        fselector_data = Ap::Algorithm::FselectorFilter.new(file_data)
+        fselector_data.perform
+
+        @scores = fselector_env.scores.merge(fselector_data.scores){ |k, a_value, b_value| (a_value + b_value)/2 }
+      end
+
+      def levels_of_matching(set)
+        matches = 0
+        set.each do |hypothesis|
+          @prediction_to_analyze.sensors.each do |sensor|
+            sensor_name = sensor.name.to_sym
+            if sensor.value.to_i.zero? || hypothesis[sensor_name] == ""
+              matches += 1 if ["", sensor.value].include?(hypothesis[sensor_name])
+            else
+              hypothesis_difference = (hypothesis[sensor_name].to_i - sensor.value.to_i).abs
+              matches += 1 if
+                hypothesis_difference < 0.3 * @scores[sensor_name] * sensor.value.to_i
+            end
+          end
+        end
+
+        (matches * 100)/(set.length * 6)
+      end
+
       def prediction_outcome
-        return compare_matches(true, true) if @G == [@empty_slot]
+        return compare_matches(true, true) if @G == [EMPTY_SLOT]
 
         outcome = compare_matches(@matches_G == 100, @matches_G != 100)
         outcome + ', G:' + @matches_G.to_s
@@ -36,27 +72,15 @@ module Ap
         elsif @matches_S < 45 and general_death_evaluation
           'dies S:' + @matches_S.to_s
         else
-          # generate only if we have uncertainty
-          @U = Ap::Algorithm::UncertainOutcomes.new(@G, @S, @prediction, @empty_slot).generate
+          uncertain = Ap::UncertainProcessing::UncertainOutcomes.new(
+            @G, @S, @prediction_to_analyze, @predictions, @scores
+          )
 
-          #TODO: analyze here @U - uncertain set
-          'uncertain S:' + @matches_S.to_s
+          uncertain.perform
+
+          @U = uncertain.values
+          uncertain.result
         end
-      end
-
-      def levels_of_matching(set)
-        matches = 0
-        set.each do |hypothesis|
-          @prediction.sensors.each do |sensor|
-            if sensor.value.to_i.zero? || hypothesis[sensor.name.to_sym] == ""
-              matches += 1 if ["", sensor.value].include?(hypothesis[sensor.name.to_sym])
-            else
-              matches += 1 if (hypothesis[sensor.name.to_sym].to_i - sensor.value.to_i).abs < 0.3 * sensor.value.to_i
-            end
-          end
-        end
-
-        (matches * 100)/(set.length * 6)
       end
 
     end

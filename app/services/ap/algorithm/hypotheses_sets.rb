@@ -1,9 +1,8 @@
 module Ap
   module Algorithm
     class HypothesesSets
-      def initialize(predictions, empty_slot)
+      def initialize(predictions)
         @predictions = predictions
-        @empty_slot = empty_slot
 
         initialize_sets
       end
@@ -19,7 +18,7 @@ module Ap
         # H - hypotheses set/ all predictions analyze_data
 
         # G - maximal general hypotheses in H
-        @G = [ @empty_slot ]
+        @G = [ EMPTY_SLOT ]
 
         # find first positive example
 
@@ -70,7 +69,7 @@ module Ap
             # Specialize G to exclude the negative example
             @S.each do |hypothesis|
               hypothesis.each do |input|
-                hypothesis_differences = @empty_slot
+                hypothesis_differences = EMPTY_SLOT.dup
                 # input = [name, value]
                 if input.last != prediction.sensors.find_by(name: input.first).value
                   if input.last != ""
@@ -99,7 +98,7 @@ module Ap
 
         # Eliminate from G empty case if it contains anything else
         @G.count.times do
-          @G.slice!(@G.index(@empty_slot)) if @G.count > 1 and @G.include?(@empty_slot)
+          @G.slice!(@G.index(EMPTY_SLOT)) if @G.count > 1 and @G.include?(EMPTY_SLOT)
         end
       end
 
