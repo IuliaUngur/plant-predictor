@@ -5,6 +5,7 @@ module Ap
 
       def initialize(prediction, plant)
         @prediction_to_analyze = prediction
+        @plant = plant
         @predictions = Prediction.predictions_on_plants([@prediction_to_analyze.environment, 'data'], plant)
       end
 
@@ -29,7 +30,9 @@ module Ap
       end
 
       def prediction_outcome
-        analyzer = Ap::Algorithm::AnalyzeOutcome.new(@G, @S, @prediction_to_analyze, @predictions)
+        analyzer = Ap::Algorithm::AnalyzeOutcome.new(
+          @G, @S, @prediction_to_analyze, @predictions, @plant
+        )
         @result = analyzer.perform
         @U = analyzer.uncertain_set
       end

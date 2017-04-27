@@ -50,10 +50,10 @@ module Ap
         @averages = survival.averages_classified
 
         @combinations = Ap::UncertainProcessing::UncertainCombinations
-            .new(@S,@prediction_to_analyze).perform
+          .new(@S, @prediction_to_analyze).perform
 
         @combinations += Ap::UncertainProcessing::UncertainCombinations
-            .new(@G,@prediction_to_analyze).perform if @G != [EMPTY_SLOT]
+          .new(@G, @prediction_to_analyze).perform if @G != [EMPTY_SLOT]
       end
 
       def analyze_prediction
@@ -73,7 +73,6 @@ module Ap
           EMPTY_SLOT.keys.each do |feature|
             value = combination[feature]
 
-            #TODO: improve this, dies is not getting caught
             if value.to_i.zero? || hypothesis[feature] == ""
               matches += 1 if ["", value].include?(hypothesis[feature])
             else
@@ -94,7 +93,7 @@ module Ap
           elsif combination[:result] < 50
             @combinations_result[:dies] << (50 - combination[:result]) * 2 # procent out of 100
           else
-            @combinations_result[:uncertain] << 100
+            @combinations_result[:uncertain] << 50
           end
         end
       end
@@ -107,7 +106,7 @@ module Ap
         max_result = [average_dies, average_survives].max
 
         if max_result < average_uncertain
-          'uncertain with' + average_uncertain.to_s + '%'
+          'uncertain with ' + average_uncertain.to_s + '%'
         elsif max_result == average_dies
           'dies with ' + average_dies.to_s + '%'
         else

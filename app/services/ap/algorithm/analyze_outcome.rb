@@ -1,12 +1,14 @@
 module Ap
   module Algorithm
     class AnalyzeOutcome
-      def initialize(general_set, specific_set, prediction_to_analyze, predictions)
+      def initialize(general_set, specific_set, prediction_to_analyze, predictions, plant)
         @G = general_set
         @S = specific_set
 
         @prediction_to_analyze = prediction_to_analyze
         @predictions = predictions
+
+        @plant = plant
       end
 
       def perform
@@ -24,13 +26,19 @@ module Ap
       private
 
       def generate_scores
-        plant_name = @predictions.first.result.split.first
-        file = @predictions.first.environment + '_' + plant_name
+        file_env = @prediction_to_analyze.environment + '_' + @plant
+        file_data = 'data_' + @plant
 
-        fselector = Ap::Algorithm::FselectorFilter.new(file)
-        fselector.perform
+        Ap::FormatGenerators::ExportCsv.new(@prediction_to_analyze.environment, @plant).perform
+        Ap::FormatGenerators::ExportCsv.new('data', @plant).perform
 
-        @scores = fselector.scores
+        fselector_env = Ap::Algorithm::FselectorFilter.new(file_env)
+        fselector_env.perform
+
+        fselector_data = Ap::Algorithm::FselectorFilter.new(file_data)
+        fselector_data.perform
+
+        @scores = fselector_env.scores.merge(fselector_data.scores){ |k, a_value, b_value| (a_value + b_value)/2 }
       end
 
       def levels_of_matching(set)
@@ -64,8 +72,9 @@ module Ap
         elsif @matches_S < 45 and general_death_evaluation
           'dies S:' + @matches_S.to_s
         else
-          uncertain = Ap::UncertainProcessing::UncertainOutcomes
-            .new(@G, @S, @prediction_to_analyze, @predictions, @scores)
+          uncertain = Ap::UncertainProcessing::UncertainOutcomes.new(
+            @G, @S, @prediction_to_analyze, @predictions, @scores
+          )
 
           uncertain.perform
 
