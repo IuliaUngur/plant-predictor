@@ -33,6 +33,18 @@ module PredictionHelper
     }
   end
 
+  def homepage_paths
+    {
+      arduino: asset_path('arduino-1.png'),
+      react: asset_path('react.png'),
+      ruby: asset_path('ruby.png'),
+      slideshow1: "https://placehold.it/2048x1020",
+      slideshow2: "https://placehold.it/2048x1024",
+      slideshow3: "https://placehold.it/2048x1024",
+      slideshow4: "https://placehold.it/2048x1024"
+    }
+  end
+
   def components_descriptions
     {
       temperature: "measures the temperature. Lorem ipsum dolor sit amet, vivendo nominavi eu eam. Per id velit primis.",

@@ -1,4 +1,8 @@
 var ReactHomePage = React.createClass({
+  propTypes: {
+    homepagePaths: React.PropTypes.object
+  },
+
   slider: function(){
     return(
       <div className="container-fluid">
@@ -12,19 +16,19 @@ var ReactHomePage = React.createClass({
 
           <div className="carousel-inner" role="listbox">
             <div className="item active">
-              <img src="https://placehold.it/2048x1024"/>
+              <img src={this.props.homepagePaths.slideshow1}/>
             </div>
 
             <div className="item">
-              <img src="https://placehold.it/2048x1024"/>
+              <img src={this.props.homepagePaths.slideshow2}/>
             </div>
 
             <div className="item">
-              <img src="https://placehold.it/2048x1024"/>
+              <img src={this.props.homepagePaths.slideshow3}/>
             </div>
 
             <div className="item">
-              <img src="https://placehold.it/2048x1024"/>
+              <img src={this.props.homepagePaths.slideshow4}/>
             </div>
           </div>
 
@@ -41,31 +45,49 @@ var ReactHomePage = React.createClass({
 
   technologies: function(){
     var style= {
-      width: '100%'
+      width: 'auto',
+      height: '250px',
+      margin: '0px auto',
+      display: 'block'
+    };
+
+    var containerStyle={
+      marginBottom: '100px'
     };
     return(
-      <div className="container text-center">
+      <div className="container text-center" style={containerStyle}>
         <h3>Technologies</h3><br/>
         <div className="row">
           <div className="col-sm-4">
-            <img src="https://placehold.it/150x80" className="img-responsive" style={style} alt="Image"/>
-            <p>Ruby On Rails</p>
+            <img src={this.props.homepagePaths.ruby} className="img-responsive" style={style}/>
+            <p><strong>Ruby On Rails</strong></p>
             <div className="well">
-            <p>Some text..</p>
+              <p>MVC and server-side web application framework, for and written in Ruby,
+                providing default structures like a database, web services and web pages.</p>
+              <p>(source:
+                <a href="https://en.wikipedia.org/wiki/Ruby_on_Rails">Wiki</a>,
+                <a href="http://rubyonrails.org/">Rails</a>)</p>
             </div>
           </div>
           <div className="col-sm-4">
-            <img src="https://placehold.it/150x80" className="img-responsive" style={style} alt="Image"/>
-            <p>ReactJS</p>
+            <img src={this.props.homepagePaths.react} className="img-responsive" style={style}/>
+            <p><strong>ReactJS</strong></p>
             <div className="well">
-            <p>Some text..</p>
+              <p>Open-source Javascript library for building user interfaces - corresponding to
+                View in the MVC model.</p>
+              <p>(source: <a href="https://facebook.github.io/react/">React</a>)</p>
             </div>
           </div>
           <div className="col-sm-4">
-            <img src="https://placehold.it/150x80" className="img-responsive" style={style} alt="Image"/>
-            <p>Arduino</p>
+            <img src={this.props.homepagePaths.arduino} className="img-responsive" style={style}/>
+            <p><strong>Arduino</strong></p>
             <div className="well">
-            <p>Some text..</p>
+              <p>Microcontroller board that can be easily connected to a computer with a USB.
+                Typically programmed using a dialect of features from C and C++.
+              </p>
+              <p>(source:
+                <a href="https://en.wikipedia.org/wiki/Arduino">Wiki</a>,
+                <a href="https://www.arduino.cc/">Arduino</a>)</p>
             </div>
           </div>
         </div>
@@ -74,9 +96,22 @@ var ReactHomePage = React.createClass({
   },
 
   footer: function(){
+    var style={
+      position: 'fixed',
+      right: 0,
+      bottom: 0,
+      left: 0,
+      padding: '1rem'
+    };
+
     return(
-      <footer className="container-fluid text-center">
-        <p>Footer Text</p>
+      <footer className="container-fluid text-center" style={style}>
+        <p>Bachelor degree, Student: <strong>Ungur Iulia</strong>,
+        Supervisor: <strong>Assoc. Prof. Adrian Groza</strong></p>
+        <p>Faculty of Automation and Computer Science,
+            Computer Science Department, Technical University Of Cluj-Napoca, Romania</p>
+        <br/>
+        <p><strong>2016-2017</strong></p>
       </footer>
     );
   },
@@ -86,7 +121,7 @@ var ReactHomePage = React.createClass({
       <div>
         {this.slider()}
         {this.technologies()}
-        <br/>
+        <br/><br/><br/><br/>
         {this.footer()}
       </div>
     );
