@@ -47,12 +47,23 @@ module PredictionHelper
 
   def components_descriptions
     {
-      temperature: "measures the temperature. Lorem ipsum dolor sit amet, vivendo nominavi eu eam. Per id velit primis.",
+      temperature: "Senses the temperature between the range of –40°C and 125°C with an offset of 0.5°C. ",
       raindrops: "measures the raindrops. Lorem ipsum dolor sit amet, vivendo nominavi eu eam. Per id velit primis.",
-      light: "measures the light. Lorem ipsum dolor sit amet, vivendo nominavi eu eam. Per id velit primis.",
+      light: "Uses the amount of light detected to determine how much current to pass through the circuit.",
       humidity: "measures the humidity. Lorem ipsum dolor sit amet, vivendo nominavi eu eam. Per id velit primis.",
       distance: "measures the distance. Lorem ipsum dolor sit amet, vivendo nominavi eu eam. Per id velit primis.",
       vibration: "measures the vibration. Lorem ipsum dolor sit amet, vivendo nominavi eu eam. Per id velit primis."
+    }
+  end
+
+  def components_datasheets
+    {
+      temperature: "http://www.ti.com/lit/ds/symlink/lm50.pdf",
+      raindrops: "https://www.openhacks.com/uploadsproductos/rain_sensor_module.pdf",
+      light: "https://www.robofun.ro/docs/ELPT15-21C.pdf",
+      humidity: "http://forum.researchdesignlab.com/datasheet/sensors/soil%20moisture%20sensor.pdf",
+      distance: "http://www.micropik.com/PDF/HCSR04.pdf",
+      vibration: "https://www.sparkfun.com/datasheets/Sensors/Flex/p37e.pdf"
     }
   end
 

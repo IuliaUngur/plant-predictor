@@ -110,7 +110,7 @@ var ReactHomePage = React.createClass({
         Supervisor: <strong>Assoc. Prof. Adrian Groza</strong></p>
         <p>Faculty of Automation and Computer Science,
             Computer Science Department, Technical University Of Cluj-Napoca, Romania</p>
-        <br/>
+        <p><a href="https://github.com/IuliaUngur/plant-predictor">Source code</a></p>
         <p><strong>2016-2017</strong></p>
       </footer>
     );
