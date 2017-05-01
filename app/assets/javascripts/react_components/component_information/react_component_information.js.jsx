@@ -1,6 +1,6 @@
 var ReactComponentInformation = React.createClass({
   propTypes: {
-    background_path: React.PropTypes.string,
+    components_electrical_schema: React.PropTypes.object,
     components_images: React.PropTypes.object,
     components_icons: React.PropTypes.object,
     components_informations: React.PropTypes.object,
@@ -30,7 +30,7 @@ var ReactComponentInformation = React.createClass({
                 </div>
 
                 <div className="col-md-8">
-                  <img src={this.props.background_path} className="img-responsive"/>
+                  <img src={this.props.components_electrical_schema[sensor]} className="img-responsive"/>
                 </div>
               </div>
             </div>
