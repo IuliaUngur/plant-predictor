@@ -44,22 +44,12 @@ var ReactHomePage = React.createClass({
   },
 
   technologies: function(){
-    var style= {
-      width: 'auto',
-      height: '250px',
-      margin: '0px auto',
-      display: 'block'
-    };
-
-    var containerStyle={
-      marginBottom: '100px'
-    };
     return(
-      <div className="container text-center" style={containerStyle}>
+      <div className="container text-center technology-container" >
         <h3>Technologies</h3><br/>
         <div className="row">
           <div className="col-sm-4">
-            <img src={this.props.homepagePaths.ruby} className="img-responsive" style={style}/>
+            <img src={this.props.homepagePaths.ruby} className="img-responsive technology-image"/>
             <p><strong>Ruby On Rails</strong></p>
             <div className="well">
               <p>MVC and server-side web application framework, for and written in Ruby,
@@ -70,7 +60,7 @@ var ReactHomePage = React.createClass({
             </div>
           </div>
           <div className="col-sm-4">
-            <img src={this.props.homepagePaths.react} className="img-responsive" style={style}/>
+            <img src={this.props.homepagePaths.react} className="img-responsive technology-image"/>
             <p><strong>ReactJS</strong></p>
             <div className="well">
               <p>Open-source Javascript library for building user interfaces - corresponding to
@@ -79,7 +69,7 @@ var ReactHomePage = React.createClass({
             </div>
           </div>
           <div className="col-sm-4">
-            <img src={this.props.homepagePaths.arduino} className="img-responsive" style={style}/>
+            <img src={this.props.homepagePaths.arduino} className="img-responsive technology-image"/>
             <p><strong>Arduino</strong></p>
             <div className="well">
               <p>Microcontroller board that can be easily connected to a computer with a USB.
@@ -96,16 +86,8 @@ var ReactHomePage = React.createClass({
   },
 
   footer: function(){
-    var style={
-      position: 'fixed',
-      right: 0,
-      bottom: 0,
-      left: 0,
-      padding: '1rem'
-    };
-
     return(
-      <footer className="container-fluid text-center" style={style}>
+      <footer className="container-fluid text-center footer-styling">
         <p>Bachelor degree, Student: <strong>Ungur Iulia</strong>,
         Supervisor: <strong>Assoc. Prof. Adrian Groza</strong></p>
         <p>Faculty of Automation and Computer Science,

@@ -20,18 +20,11 @@ class Prediction < ActiveRecord::Base
   }
 
   def sensor_result_set
-    p = {}
-    sensors.map do |sensor|
-      p.merge!(sensor.name => sensor.value)
-    end
+    p = Hash[sensors.collect { |s| [ s.name.to_sym, s.value ] } ]
     p.merge!(result: result.to_s, id: id)
   end
 
   def sensor_set
-    p = {}
-    sensors.map do |sensor|
-      p.merge!(sensor.name.to_sym => sensor.value)
-    end
-    p
+    Hash[sensors.collect { |s| [ s.name.to_sym, s.value ] } ]
   end
 end
