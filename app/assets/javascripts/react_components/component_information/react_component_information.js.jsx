@@ -1,9 +1,10 @@
 var ReactComponentInformation = React.createClass({
   propTypes: {
-    background_path: React.PropTypes.string,
+    components_electrical_schema: React.PropTypes.object,
     components_images: React.PropTypes.object,
     components_icons: React.PropTypes.object,
     components_informations: React.PropTypes.object,
+    component_sources: React.PropTypes.object
   },
 
   modal: function(sensor) {
@@ -25,10 +26,11 @@ var ReactComponentInformation = React.createClass({
                 <div className="col-md-2 info-bordered-right">
                   <img src={this.props.components_images[sensor]} className="img-responsive"/>
                   <h4>{this.props.components_informations[sensor]}</h4>
+                  <h5>source: <a href={this.props.component_sources[sensor]}>Datasheet</a></h5>
                 </div>
 
                 <div className="col-md-8">
-                  <img src={this.props.background_path} className="img-responsive"/>
+                  <img src={this.props.components_electrical_schema[sensor]} className="img-responsive"/>
                 </div>
               </div>
             </div>
