@@ -29,7 +29,7 @@ gem 'fuzzy-logic', path: "vendor/fuzzy-logic"
 gem 'sidekiq'
 gem 'sidekiq-cron', '~> 0.4.0'
 
-gem 'rinruby', '~> 2.0.2'
+# gem 'rinruby', '~> 2.0.2'
 gem 'fselector', path: "vendor/fselector"
 
 group :development do

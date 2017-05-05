@@ -1,5 +1,5 @@
 # access to the statistical routines in R package
-require 'rinruby'
+# require 'rinruby'
 # R.eval 'options(warn = -1)' # suppress R warnings
 
 #
