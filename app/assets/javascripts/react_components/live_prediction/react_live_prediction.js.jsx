@@ -12,7 +12,7 @@ var ReactLivePrediction = React.createClass({
 
   getInitialState: function(){
     var that = this;
-    setInterval(function(){
+    var interval = setInterval(function(){
       that.reloadPredictions();
     }, this.props.reload_time);
 
@@ -20,8 +20,13 @@ var ReactLivePrediction = React.createClass({
       predictions: this.props.predictions,
       src_readings: this.props.src_readings,
       src_hypotheses: this.props.src_hypotheses,
-      selection: ''
+      selection: '',
+      intervalRequest: interval
     }
+  },
+
+  componentWillUnmount: function() {
+    clearInterval(this.state.intervalRequest);
   },
 
   render: function(){
