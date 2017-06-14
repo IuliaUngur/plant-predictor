@@ -86,6 +86,6 @@ module PredictionHelper
   end
 
   def available_plants
-    %w(potato beans rice wheat corn)
+    %w(szeged soybean rice cotton corn)
   end
 end
