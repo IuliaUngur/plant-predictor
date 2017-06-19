@@ -1,4 +1,5 @@
 Prediction.where(environment: "data").destroy_all
+Prediction.where("result LIKE '%szeged%'").destroy_all
 Prediction.create(environment: "simulation")
 Prediction.create(environment: "live")
 
