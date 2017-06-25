@@ -49,10 +49,10 @@ module PredictionHelper
       arduino: asset_path('arduino-1.png'),
       react: asset_path('react.png'),
       ruby: asset_path('ruby.png'),
-      slideshow1: "https://placehold.it/2048x1020",
-      slideshow2: "https://placehold.it/2048x1024",
-      slideshow3: "https://placehold.it/2048x1024",
-      slideshow4: "https://placehold.it/2048x1024"
+      slideshow1: asset_path('homepage/ai_1.png'),
+      slideshow2: asset_path('homepage/ai_2.png'),
+      slideshow3: asset_path('homepage/ai_3.png'),
+      slideshow4: asset_path('homepage/ai_4.png')
     }
   end
 

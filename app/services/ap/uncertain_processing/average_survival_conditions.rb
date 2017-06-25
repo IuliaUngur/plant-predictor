@@ -37,7 +37,7 @@ module Ap
 
         survival_predictions.each do |prediction|
           prediction.sensors.each do |sensor|
-            if sensor.value.to_i.zero?
+            if sensor.value.to_i.zero? && sensor.value != "0"
               sensor_constant_values = sensor.name.to_s.upcase.constantize
               @average_survival[sensor.name.to_sym] +=
                 (sensor_constant_values.find_index(sensor.value).to_f / no_survivals)
