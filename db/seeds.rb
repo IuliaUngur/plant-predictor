@@ -45,5 +45,5 @@ Sensor.create(name: "humidity", measurement: "continuous", value: "82", predicti
 Sensor.create(name: "raindrop", measurement: "limited", value: "DRIZZLE", prediction: corn)
 Sensor.create(name: "distance", measurement: "limited", value: "NEARBY", prediction: corn)
 
-system("rake ENVIRONMENT=simulation PLANT=szeged import_csv")
-system("rake ENVIRONMENT=live PLANT=szeged import_csv")
+system("rake ENVIRONMENT=data PLANT=szeged import_csv")
+# system("rake ENVIRONMENT=live PLANT=szeged import_csv")

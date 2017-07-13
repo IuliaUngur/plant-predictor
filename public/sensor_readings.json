@@ -1,8 +1,7 @@
-{
-  "temperature": "",
-  "light": "",
-  "vibration": "",
-  "distance": "",
-  "humidity": "",
-  "raindrop": ""
-}
+{"temperature":"27.64",
+"light":"DARK",
+"vibration":"0",
+"distance":"127.56",
+"humidity":"0",
+"raindrop":"DRY"}
+

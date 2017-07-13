@@ -62,10 +62,16 @@ class PredictionsController < ApplicationController
     predictions = Prediction.predictions_on_plants(['live', 'data'], permitted_params[:plant_selection])
     creation_data = data.merge(prediction_type: 'live', plant_selection: permitted_params[:plant_selection])
 
+    fuzzy_data = {}
+    data.collect do |k,v| 
+      fuzzy_data.merge!(k => Ap::CreatorsModifiers::SensorCreation.new(k, v, nil).get_sensor_value.to_s) 
+    end
+
     return render json: {}, status: 400 if data.values.include?('')
     return create_sensor_set(creation_data) if predictions.empty?
 
-    return render json: {}, status: 400 if predictions.first.sensors.pluck(:name, :value).to_h == data
+    return render json: {}, status: 400 if 
+      predictions.first.sensors.pluck(:name, :value).to_h == fuzzy_data
     create_sensor_set(creation_data)
   end
 

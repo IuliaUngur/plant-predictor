@@ -13,6 +13,10 @@ module Ap
         create_sensor(fuzzy_sensor_value)
       end
 
+      def get_sensor_value
+        fuzzy_sensor_value
+      end
+
       private
 
       def fuzzy_sensor_value
