@@ -1,4 +1,14 @@
 # README
+[![CircleCI](https://circleci.com/gh/IuliaUngur/plant-predictor/tree/master.svg?style=svg)](https://circleci.com/gh/IuliaUngur/plant-predictor/tree/master)
+
+## Ruby version
+- 2.3.1
+
+## Rails version
+- 5.0.1
+
+## Circle CI
+- version 2
 
 Version Space Generalization using Plant Growth Predictions on noisy and uncertain data
 ---------------------
